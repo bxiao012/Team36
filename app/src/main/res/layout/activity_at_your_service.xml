@@ -6,4 +6,102 @@
     android:layout_height="match_parent"
     tools:context=".AtYourServiceActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ExchangeRate Calculator"
+        android:textSize="30dp"
+        android:textColor="#29465A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.095" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.202">
+
+        <LinearLayout
+            android:id="@+id/fromLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fromText"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="FROM" />
+
+            <EditText
+                android:id="@+id/fromValue"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="1" />
+
+
+            <Spinner
+                android:id="@+id/fromCurrency"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/toLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/toText"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TO" />
+
+            <EditText
+                android:id="@+id/toValue"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_weight="1" />
+
+
+            <Spinner
+                android:id="@+id/toCurrency"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnCalculate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="calculate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintVertical_bias="0.232" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
