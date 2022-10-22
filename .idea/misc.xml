@@ -3,9 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_at_your_service.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_at_your_service.xml" value="0.3920094807942707" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.26811594202898553" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.26811594202898553" />
+        <entry key="app/src/main/res/layout/support_simple_spinner_dropdown_item.xml" value="0.17447916666666666" />
       </map>
     </option>
   </component>
