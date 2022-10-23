@@ -33,6 +33,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
         convertFromDropdown = (Spinner) findViewById(R.id.fromCurrency);
         btnCalculate = (Button) findViewById(R.id.btnCalculate);
 
+        final LoadingAlertDialog loadingAlertDialog = new LoadingAlertDialog(AtYourServiceActivity.this);
+
         String[] currencyList = {"USD", "AOA","ARS","AUD","CAD","CNY","EUR","GBP","INR","LAK","LBP","MOP","NZD","VUV","WST","ZAR","ZWL"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,currencyList);
         convertFromDropdown.setAdapter(adapter);
@@ -41,6 +43,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingAlertDialog.startLoadingAlertDialog();
+
                 RetrofitInterface retrofitInterface = RetrofitBuilder.getRetrofitInstance().create(RetrofitInterface.class);
                 Call<JsonObject> call = retrofitInterface.getExchangeCurrency(convertFromDropdown.getSelectedItem().toString());
                 call.enqueue(new Callback<JsonObject>() {
@@ -53,6 +57,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
                         double multiplier = Double.valueOf(rates.get(convertToDropdown.getSelectedItem().toString()).toString());
                         double result = currency * multiplier;
                         currencyToText.setText(String.valueOf(result));
+
+                        loadingAlertDialog.stopLoadingAlertDialog();
                     }
 
                     @Override
