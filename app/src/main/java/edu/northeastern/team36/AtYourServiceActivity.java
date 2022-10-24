@@ -2,6 +2,7 @@ package edu.northeastern.team36;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.google.gson.JsonObject;
 import edu.northeastern.team36.Retrofit.RetrofitBuilder;
 import edu.northeastern.team36.Retrofit.RetrofitInterface;
@@ -53,16 +56,22 @@ public class AtYourServiceActivity extends AppCompatActivity {
                         JsonObject res = response.body();
                         Log.d("response", String.valueOf(response.body()));
                         JsonObject rates = res.getAsJsonObject("rates");
-                        double currency = Double.valueOf(currencyFromText.getText().toString());
-                        double multiplier = Double.valueOf(rates.get(convertToDropdown.getSelectedItem().toString()).toString());
-                        double result = currency * multiplier;
-                        currencyToText.setText(String.valueOf(result));
-
-                        loadingAlertDialog.stopLoadingAlertDialog();
+                        try {
+                            double currency = Double.valueOf(currencyFromText.getText().toString());
+                            double multiplier = Double.valueOf(rates.get(convertToDropdown.getSelectedItem().toString()).toString());
+                            double result = currency * multiplier;
+                            currencyToText.setText(String.valueOf(result));
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(getApplicationContext(), "Invalid input!", Toast.LENGTH_LONG).show();
+                        } finally {
+                            loadingAlertDialog.stopLoadingAlertDialog();
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Cannot get the response!", Toast.LENGTH_LONG).show();
+
                     }
                 });
             }
