@@ -14,12 +14,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = (Button) findViewById(R.id.button);
+        Button buttonA7 = (Button) findViewById(R.id.button);
+        Button buttonA8 = (Button) findViewById(R.id.button2);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonA7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AtYourServiceActivity();
+            }
+        });
+        buttonA8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                A8MainActivity();
             }
         });
 
@@ -27,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void AtYourServiceActivity(){
         Intent intent = new Intent(this,AtYourServiceActivity.class) ;
+        startActivity(intent);
+    }
+
+    public void A8MainActivity(){
+        Intent intent = new Intent(this,A8MainActivity.class) ;
         startActivity(intent);
     }
 }
