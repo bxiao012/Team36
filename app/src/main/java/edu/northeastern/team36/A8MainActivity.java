@@ -66,50 +66,52 @@ public class A8MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 helloCurrentUser.setText("Hello, " + loginUsername.getText().toString());
                 currentUser = loginUsername.getText().toString();
+
+
+                // Connect with firebase
+                myDB = FirebaseDatabase.getInstance().getReference();
+
+                // Add DB updates listener
+                myDB.child("messages").addChildEventListener(
+                        new ChildEventListener() {
+
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                showMessage(dataSnapshot);
+                                Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue().toString());
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                showMessage(dataSnapshot);
+                                Log.v(TAG, "onChildChanged: " + dataSnapshot.getValue().toString());
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, "onCancelled:" + databaseError);
+                                Toast.makeText(getApplicationContext()
+                                        , "DBError: " + databaseError, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+
             }
         });
 
 
 
 
-
-        // Connect with firebase
-        myDB = FirebaseDatabase.getInstance().getReference();
-
-        // Add DB updates listener
-        myDB.child("messages").addChildEventListener(
-                new ChildEventListener() {
-
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        showMessage(dataSnapshot);
-                        Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue().toString());
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        showMessage(dataSnapshot);
-                        Log.v(TAG, "onChildChanged: " + dataSnapshot.getValue().toString());
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.e(TAG, "onCancelled:" + databaseError);
-                        Toast.makeText(getApplicationContext()
-                                , "DBError: " + databaseError, Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
 
 
         // Send message - insert 1 message object into DB
