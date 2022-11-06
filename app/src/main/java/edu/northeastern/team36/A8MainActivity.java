@@ -1,8 +1,16 @@
 package edu.northeastern.team36;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -187,6 +195,8 @@ public class A8MainActivity extends AppCompatActivity {
         RTDBMessage message = dataSnapshot.getValue(RTDBMessage.class);
         if (message.toUsername.equals(currentUser)){
             txtReceived.append("\n\nfrom: " + message.fromUsername + "\nstickerID: " + message.stickerID + "\ntime: " + message.timestamp);
+            createNotificationChannel();
+            sendNotification();
         }
         if (message.fromUsername.equals(currentUser)){
             String currSticker = message.stickerID;
@@ -208,6 +218,51 @@ public class A8MainActivity extends AppCompatActivity {
         }
 
         return sentBuilder.toString();
+    }
+
+    // create notification
+    public void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "New Sticker";
+            String description = "A new sticker is sent from someone else!";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("STICKER_NOTIFICATION", name, importance);
+            channel.setDescription(description);
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void sendNotification() {
+        // no action, just display the image and text
+        // build notification
+        String channelId = "STICKER_NOTIFICATION";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setContentTitle("New Sticker!")
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_launcher_team36_foreground);
+
+//        // show image
+        Bitmap bitmap = null;
+        if (selected == null) {
+            return;
+        } else if (selected.equals(stickers.get(0))) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
+        } else if (selected.equals(stickers.get(1))) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange);
+        } else if (selected.equals(stickers.get(2))) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.strawberry);
+        } else if (selected.equals(stickers.get(3))) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.watermelon);
+        }
+        builder.setLargeIcon(bitmap)
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).bigLargeIcon(null));
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification noti = builder.build();
+        notificationManager.notify(1, noti);
     }
 
 }
