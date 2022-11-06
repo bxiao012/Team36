@@ -29,12 +29,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class A8MainActivity extends AppCompatActivity {
 
     private static final String TAG = "A8MainActivity";
+    private static final int STICKER_NUMBER = 4;
 
     private DatabaseReference myDB;
     private TextView helloCurrentUser;
@@ -53,6 +55,7 @@ public class A8MainActivity extends AppCompatActivity {
 
 
     private Map<String, Integer> sentDict = new HashMap();
+    private List<String> stickers = new ArrayList();
 
 
     @SuppressLint("WrongViewCast")
@@ -67,6 +70,7 @@ public class A8MainActivity extends AppCompatActivity {
         btnSend = (Button) findViewById(R.id.button4);
         txtReceived = (TextView) findViewById(R.id.textView4);
         txtSent = (TextView) findViewById(R.id.textView5);
+
         ImageView image1 = findViewById(R.id.imageView1);
         ImageView image2 = findViewById(R.id.imageView2);
         ImageView image3 = findViewById(R.id.imageView3);
@@ -80,10 +84,15 @@ public class A8MainActivity extends AppCompatActivity {
         radioButtons.add(btn2);
         radioButtons.add(btn3);
         radioButtons.add(btn4);
-        btnImageMap.put(btn1, "1");
-        btnImageMap.put(btn2, "2");
-        btnImageMap.put(btn3, "3");
-        btnImageMap.put(btn4, "4");
+        for (int i=0; i < STICKER_NUMBER; i++) {
+            String currStickerId = "sticker" + i;
+            stickers.add(currStickerId);
+            sentDict.put(currStickerId, 0);
+        }
+        btnImageMap.put(btn1, stickers.get(0));
+        btnImageMap.put(btn2, stickers.get(1));
+        btnImageMap.put(btn3, stickers.get(2));
+        btnImageMap.put(btn4, stickers.get(3));
 //        initImage();
 
         //Login
@@ -92,6 +101,7 @@ public class A8MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 helloCurrentUser.setText("Hello, " + loginUsername.getText().toString());
                 currentUser = loginUsername.getText().toString();
+                txtReceived.setText("Received");
 
 
                 // Connect with firebase
@@ -190,8 +200,9 @@ public class A8MainActivity extends AppCompatActivity {
 
     }
 
+    //
     private String sentString(Map<String, Integer> sentMap) {
-        StringBuilder sentBuilder = new StringBuilder("Sent:\n");
+        StringBuilder sentBuilder = new StringBuilder("Sent:\n\n");
         for (String sticker : sentMap.keySet()){
             sentBuilder.append(sticker + " " + sentMap.get(sticker).toString() + "\n");
         }

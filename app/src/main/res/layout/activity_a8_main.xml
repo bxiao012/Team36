@@ -139,7 +139,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="290dp"
+            android:layout_height="105dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="-127dp">
 
@@ -152,7 +152,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="181dp"
+            android:layout_height="112dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="-127dp">
 
