@@ -2,11 +2,17 @@ package edu.northeastern.team36;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,39 +40,51 @@ public class A8MainActivity extends AppCompatActivity {
     private TextView helloCurrentUser;
     String currentUser = "NONE";
     private TextView loginUsername;
-    private Spinner imageID;
     private TextView toUser;
     private Button btnLogin;
     private Button btnSend;
     private TextView txtReceived;
     private TextView txtSent;
+    private RadioButton btn1, btn2, btn3, btn4;
+    private RadioGroup radioGroup;
+    private ArrayList<RadioButton> radioButtons = new ArrayList<>();
+    private Map<RadioButton, String> btnImageMap = new HashMap<>();
+    private String selected;
+
 
     private Map<String, Integer> sentDict = new HashMap();
 
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a8_main);
-
         helloCurrentUser = (TextView) findViewById(R.id.textView3);
         loginUsername = (TextView) findViewById(R.id.userInput);
-        imageID = (Spinner) findViewById(R.id.imageID);
         toUser = (TextView) findViewById(R.id.toUser);
         btnLogin = (Button) findViewById(R.id.button3);
         btnSend = (Button) findViewById(R.id.button4);
         txtReceived = (TextView) findViewById(R.id.textView4);
         txtSent = (TextView) findViewById(R.id.textView5);
-
-
-
-
-        String[] currencyList = {"sticker0", "sticker1","sticker2"};
-        for (String sticker : currencyList) {
-            sentDict.put(sticker, 0);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,currencyList);
-        imageID.setAdapter(adapter);
+        ImageView image1 = findViewById(R.id.imageView1);
+        ImageView image2 = findViewById(R.id.imageView2);
+        ImageView image3 = findViewById(R.id.imageView3);
+        ImageView image4 = findViewById(R.id.imageView4);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroupID);
+        btn1 = findViewById(R.id.radioButton1);
+        btn2 = findViewById(R.id.radioButton2);
+        btn3 = findViewById(R.id.radioButton3);
+        btn4 = findViewById(R.id.radioButton4);
+        radioButtons.add(btn1);
+        radioButtons.add(btn2);
+        radioButtons.add(btn3);
+        radioButtons.add(btn4);
+        btnImageMap.put(btn1, "1");
+        btnImageMap.put(btn2, "2");
+        btnImageMap.put(btn3, "3");
+        btnImageMap.put(btn4, "4");
+//        initImage();
 
         //Login
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -116,11 +135,6 @@ public class A8MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
         // Send message - insert 1 message object into DB
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,13 +147,9 @@ public class A8MainActivity extends AppCompatActivity {
                     String fromUsername = currentUser;
                     String toUsername = toUser.getText().toString();
                     String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
-                    String stickerID = imageID.getSelectedItem().toString();
-
+                    String stickerID = selected;
                     writeNewMessage(messageID, fromUsername, toUsername, timestamp, stickerID);
                 }
-
-
-
             }
         });
 
@@ -147,11 +157,21 @@ public class A8MainActivity extends AppCompatActivity {
     }
 
 
+    public void selectImage(View view){
+        for (RadioButton radioButton : radioButtons){
+            radioButton.setChecked(false);
+        }
+        RadioButton thisRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
+        thisRadioButton.setChecked(true);
+        selected = btnImageMap.get(thisRadioButton);
+    }
+
     public void writeNewMessage(String messageID, String fromUsername, String toUsername, String timestamp, String stickerID) {
         RTDBMessage message = new RTDBMessage(fromUsername, toUsername, timestamp, stickerID);
 
         myDB.child("messages").child(messageID).setValue(message);
     }
+
 
     private void showMessage(DataSnapshot dataSnapshot) {
         RTDBMessage message = dataSnapshot.getValue(RTDBMessage.class);
