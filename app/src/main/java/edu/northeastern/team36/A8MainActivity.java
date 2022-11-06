@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class A8MainActivity extends AppCompatActivity {
@@ -36,8 +38,9 @@ public class A8MainActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnSend;
     private TextView txtReceived;
+    private TextView txtSent;
 
-
+    private Map<String, Integer> sentDict = new HashMap();
 
 
     @Override
@@ -52,11 +55,15 @@ public class A8MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.button3);
         btnSend = (Button) findViewById(R.id.button4);
         txtReceived = (TextView) findViewById(R.id.textView4);
+        txtSent = (TextView) findViewById(R.id.textView5);
 
 
 
 
         String[] currencyList = {"sticker0", "sticker1","sticker2"};
+        for (String sticker : currencyList) {
+            sentDict.put(sticker, 0);
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,currencyList);
         imageID.setAdapter(adapter);
 
@@ -151,8 +158,25 @@ public class A8MainActivity extends AppCompatActivity {
         if (message.toUsername.equals(currentUser)){
             txtReceived.append("\n\nfrom: " + message.fromUsername + "\nstickerID: " + message.stickerID + "\ntime: " + message.timestamp);
         }
+        if (message.fromUsername.equals(currentUser)){
+            String currSticker = message.stickerID;
+            if (sentDict.containsKey(currSticker)) {
+                sentDict.put(currSticker, sentDict.get(currSticker) + 1);
+                txtSent.setText(sentString(sentDict));
+            }
+        }
 
 
 
     }
+
+    private String sentString(Map<String, Integer> sentMap) {
+        StringBuilder sentBuilder = new StringBuilder("Sent:\n");
+        for (String sticker : sentMap.keySet()){
+            sentBuilder.append(sticker + " " + sentMap.get(sticker).toString() + "\n");
+        }
+
+        return sentBuilder.toString();
+    }
+
 }
