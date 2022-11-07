@@ -241,7 +241,7 @@ public class A8MainActivity extends AppCompatActivity {
         if (message.toUsername.equals(currentUser)){
             txtReceived.append("\n\nfrom: " + message.fromUsername + "\nstickerID: " + message.stickerID + "\ntime: " + message.timestamp);
             createNotificationChannel();
-            sendNotification();
+            sendNotification(message.stickerID);
         }
         if (message.fromUsername.equals(currentUser)){
             String currSticker = message.stickerID;
@@ -280,7 +280,7 @@ public class A8MainActivity extends AppCompatActivity {
         }
     }
 
-    public void sendNotification() {
+    public void sendNotification(String stickerID) {
         // no action, just display the image and text
         // build notification
         String channelId = "STICKER_NOTIFICATION";
@@ -291,15 +291,15 @@ public class A8MainActivity extends AppCompatActivity {
 
 //        // show image
         Bitmap bitmap = null;
-        if (selected == null) {
+        if (stickerID == null) {
             return;
-        } else if (selected.equals(stickers.get(0))) {
+        } else if (stickerID.equals(stickers.get(0))) {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
-        } else if (selected.equals(stickers.get(1))) {
+        } else if (stickerID.equals(stickers.get(1))) {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange);
-        } else if (selected.equals(stickers.get(2))) {
+        } else if (stickerID.equals(stickers.get(2))) {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.strawberry);
-        } else if (selected.equals(stickers.get(3))) {
+        } else if (stickerID.equals(stickers.get(3))) {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.watermelon);
         }
         builder.setLargeIcon(bitmap)
