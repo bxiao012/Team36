@@ -1,9 +1,11 @@
 package edu.northeastern.team36;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -270,4 +272,35 @@ public class A8MainActivity extends AppCompatActivity {
         notificationManager.notify(1, noti);
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("helloCurrentUser", helloCurrentUser.getText().toString());
+        outState.putString("currentUser", currentUser);
+        outState.putString("currentToUser", toUser.getText().toString());
+        outState.putInt("selectedButton", radioGroup.getCheckedRadioButtonId());
+        outState.putString("selected", selected);
+
+        outState.putString("txtReceived", txtReceived.getText().toString());
+        outState.putString("txtSent", txtSent.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        helloCurrentUser.setText(savedInstanceState.getString("helloCurrentUser"));
+        currentUser = savedInstanceState.getString("currentUser"); // 可能出问题，把setOnclick改成函数这里也call一下
+
+        radioGroup.check(savedInstanceState.getInt("selectedButton"));
+        selected = savedInstanceState.getString("selected");
+
+        toUser.setText(savedInstanceState.getString("currentToUser"));
+        txtReceived.setText(savedInstanceState.getString("txtReceived"));
+        txtSent.setText(savedInstanceState.getString("txtSent"));
+        Log.e(TAG, "toUser" + savedInstanceState.getString("currentToUser"));
+        Log.e(TAG, "txtReceived" + savedInstanceState.getString("txtReceived"));
+        Log.e(TAG, "txtSent" + savedInstanceState.getString("txtSent"));
+
+
+    }
 }
