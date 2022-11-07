@@ -62,8 +62,8 @@ public class A8MainActivity extends AppCompatActivity {
     private String selected;
 
 
-    private Map<String, Integer> sentDict = new HashMap();
-    private List<String> stickers = new ArrayList();
+    private Map<String, Integer> sentDict = new HashMap<>();
+    private List<String> stickers = new ArrayList<>();
 
 
     @SuppressLint("WrongViewCast")
@@ -109,8 +109,13 @@ public class A8MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 helloCurrentUser.setText("Hello, " + loginUsername.getText().toString());
                 currentUser = loginUsername.getText().toString();
+                // init received and sent history
                 txtReceived.setText("Received");
-
+                txtSent.setText("Sent:\n\n");
+                for (int i = 0; i < STICKER_NUMBER; i++) {
+                    String currStickerId = "sticker" + i;
+                    sentDict.put(currStickerId, 0);
+                }
 
                 // Connect with firebase
                 myDB = FirebaseDatabase.getInstance().getReference();
@@ -176,11 +181,11 @@ public class A8MainActivity extends AppCompatActivity {
 
 
     public void selectImage(View view){
-        for (RadioButton radioButton : radioButtons){
-            radioButton.setChecked(false);
-        }
+//        for (RadioButton radioButton : radioButtons){
+//            radioButton.setChecked(false);
+//        }
         RadioButton thisRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
-        thisRadioButton.setChecked(true);
+//        thisRadioButton.setChecked(true);
         selected = btnImageMap.get(thisRadioButton);
     }
 
