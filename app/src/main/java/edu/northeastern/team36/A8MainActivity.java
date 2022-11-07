@@ -55,6 +55,8 @@ public class A8MainActivity extends AppCompatActivity {
     private TextView toUser;
     private Button btnLogin;
     private Button btnSend;
+    private Button btnShowReceived;
+    private Button btnShowSent;
     private TextView txtReceived;
     private TextView txtSent;
     private RadioButton btn1, btn2, btn3, btn4;
@@ -80,6 +82,8 @@ public class A8MainActivity extends AppCompatActivity {
         btnSend = (Button) findViewById(R.id.button4);
         txtReceived = (TextView) findViewById(R.id.textView4);
         txtSent = (TextView) findViewById(R.id.textView5);
+        btnShowReceived = (Button) findViewById(R.id.buttonShowReceived);
+        btnShowSent = (Button) findViewById(R.id.buttonShowSent);
 
         ImageView image1 = findViewById(R.id.imageView1);
         ImageView image2 = findViewById(R.id.imageView2);
@@ -178,6 +182,37 @@ public class A8MainActivity extends AppCompatActivity {
             }
         });
 
+        // show received history
+        btnShowReceived.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int zeroLine = 0;
+                if (txtReceived.getMaxLines() == zeroLine) {
+                    txtReceived.setMaxLines(Integer.MAX_VALUE);
+                    btnShowReceived.setText("Close Received");
+                } else {
+                    txtReceived.setMaxLines(zeroLine);
+                    btnShowReceived.setText("Show Received");
+
+                }
+            }
+        });
+
+        // show sent history
+        btnShowSent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int zeroLine = 0;
+                if (txtSent.getMaxLines() == zeroLine) {
+                    txtSent.setMaxLines(Integer.MAX_VALUE);
+                    btnShowSent.setText("Close Sent");
+                } else {
+                    txtSent.setMaxLines(zeroLine);
+                    btnShowSent.setText("Show Sent");
+
+                }
+            }
+        });
 
     }
 
@@ -217,7 +252,7 @@ public class A8MainActivity extends AppCompatActivity {
 
     }
 
-    //
+    // add to the sent history
     private String sentString(Map<String, Integer> sentMap) {
         StringBuilder sentBuilder = new StringBuilder("Sent:\n\n");
         for (String sticker : sentMap.keySet()){
@@ -283,6 +318,8 @@ public class A8MainActivity extends AppCompatActivity {
 
         outState.putString("txtReceived", txtReceived.getText().toString());
         outState.putString("txtSent", txtSent.getText().toString());
+        outState.putInt("txtReceivedMaxLine", txtReceived.getMaxLines());
+        outState.putInt("txtSentMaxLine", txtSent.getMaxLines());
     }
 
     @Override
@@ -297,9 +334,14 @@ public class A8MainActivity extends AppCompatActivity {
         toUser.setText(savedInstanceState.getString("currentToUser"));
         txtReceived.setText(savedInstanceState.getString("txtReceived"));
         txtSent.setText(savedInstanceState.getString("txtSent"));
-        Log.e(TAG, "toUser" + savedInstanceState.getString("currentToUser"));
-        Log.e(TAG, "txtReceived" + savedInstanceState.getString("txtReceived"));
-        Log.e(TAG, "txtSent" + savedInstanceState.getString("txtSent"));
+
+        int txtReceivedMaxLine, txtSentMaxLine, zeroLine = 0;
+        txtReceivedMaxLine = savedInstanceState.getInt("txtReceivedMaxLine");
+        txtSentMaxLine = savedInstanceState.getInt("txtSentMaxLine");
+        txtReceived.setMaxLines(txtReceivedMaxLine);
+        txtSent.setMaxLines(txtSentMaxLine);
+        btnShowReceived.setText(txtReceivedMaxLine == zeroLine ? "Show Received" : "Close Received");
+        btnShowSent.setText(txtSentMaxLine == zeroLine ? "Show Sent" : "Close Sent");
 
 
     }
