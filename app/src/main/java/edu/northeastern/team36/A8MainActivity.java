@@ -122,45 +122,8 @@ public class A8MainActivity extends AppCompatActivity {
                     String currStickerId = "sticker" + i;
                     sentDict.put(currStickerId, 0);
                 }
-
-                // Connect with firebase
-                myDB = FirebaseDatabase.getInstance().getReference();
-
-                // Add DB updates listener
-                myDB.child("messages").addChildEventListener(
-                        new ChildEventListener() {
-
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                showMessage(dataSnapshot);
-                                Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue().toString());
-                            }
-
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                showMessage(dataSnapshot);
-                                Log.v(TAG, "onChildChanged: " + dataSnapshot.getValue().toString());
-                            }
-
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                            }
-
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.e(TAG, "onCancelled:" + databaseError);
-                                Toast.makeText(getApplicationContext()
-                                        , "DBError: " + databaseError, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                );
-
+                // Connect database and add listener
+                connectDatabaseAddListener();
             }
         });
 
@@ -216,6 +179,46 @@ public class A8MainActivity extends AppCompatActivity {
 
     }
 
+    // Connect database and add listener
+    private void connectDatabaseAddListener() {
+        // Connect with firebase
+        myDB = FirebaseDatabase.getInstance().getReference();
+
+        // Add DB updates listener
+        myDB.child("messages").addChildEventListener(
+                new ChildEventListener() {
+
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        showMessage(dataSnapshot);
+                        Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue().toString());
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        showMessage(dataSnapshot);
+                        Log.v(TAG, "onChildChanged: " + dataSnapshot.getValue().toString());
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e(TAG, "onCancelled:" + databaseError);
+                        Toast.makeText(getApplicationContext()
+                                , "DBError: " + databaseError, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+    }
 
     public void selectImage(View view){
 //        for (RadioButton radioButton : radioButtons){
@@ -327,6 +330,7 @@ public class A8MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         helloCurrentUser.setText(savedInstanceState.getString("helloCurrentUser"));
         currentUser = savedInstanceState.getString("currentUser"); // 可能出问题，把setOnclick改成函数这里也call一下
+        connectDatabaseAddListener();
 
         radioGroup.check(savedInstanceState.getInt("selectedButton"));
         selected = savedInstanceState.getString("selected");
