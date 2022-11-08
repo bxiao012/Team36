@@ -10,7 +10,10 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.26811594202898553" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.26811594202898553" />
         <entry key="app/src/main/res/layout/activity_received_history.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/activity_sent.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/activity_sent_history.xml" value="0.196746826171875" />
         <entry key="app/src/main/res/layout/item_received.xml" value="0.2627105712890625" />
+        <entry key="app/src/main/res/layout/item_sent.xml" value="0.231927490234375" />
         <entry key="app/src/main/res/layout/loading_alert_dialog.xml" value="0.23716640748839446" />
         <entry key="app/src/main/res/layout/support_simple_spinner_dropdown_item.xml" value="0.17447916666666666" />
       </map>

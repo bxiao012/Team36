@@ -10,6 +10,12 @@ public class Received implements Parcelable {
     public final String timestamp;
     public final String stickerID;
 
+    public Received(String fromUser, String timestamp, String stickerID) {
+        this.fromUser = fromUser;
+        this.timestamp = timestamp;
+        this.stickerID = stickerID;
+    }
+
     public String getFromUser() {
         return fromUser;
     }
@@ -20,12 +26,6 @@ public class Received implements Parcelable {
 
     public String getStickerID() {
         return stickerID;
-    }
-
-    public Received(String fromUser, String timestamp, String stickerID) {
-        this.fromUser = fromUser;
-        this.timestamp = timestamp;
-        this.stickerID = stickerID;
     }
 
     @Override

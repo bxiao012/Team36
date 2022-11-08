@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
         android:layout_marginTop="20dp"
-        android:layout_toStartOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageViewReceivedSticker"
         android:text="From: "
         android:textColor="@color/black"
         android:textSize="20dp"
@@ -36,6 +36,5 @@
         android:layout_height="80dp"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="28dp"
-        app:srcCompat="@drawable/apple"
-        />
+        app:srcCompat="@drawable/apple" />
 </RelativeLayout>

@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class A8MainActivity extends AppCompatActivity {
 
     private DatabaseReference myDB;
     private TextView helloCurrentUser;
-    String currentUser = "NONE";
+    String currentUser = null;
     private TextView loginUsername;
     private TextView toUser;
     private Button btnLogin;
@@ -128,7 +129,7 @@ public class A8MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(currentUser == "NONE"){
+                if(currentUser == null){
                     Toast.makeText(getApplicationContext(), "Please login at first!", Toast.LENGTH_LONG).show();
                 } else {
                     String messageID = "message_" + UUID.randomUUID().toString();
@@ -145,7 +146,11 @@ public class A8MainActivity extends AppCompatActivity {
         btnShowReceived.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                receivedHistoryActivity();
+                if(currentUser == null){
+                    Toast.makeText(getApplicationContext(), "Please login at first!", Toast.LENGTH_LONG).show();
+                } else {
+                    receivedHistoryActivity();
+                }
             }
         });
 
@@ -153,7 +158,11 @@ public class A8MainActivity extends AppCompatActivity {
         btnShowSent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sentHistoryActivity();
+                if(currentUser == null){
+                    Toast.makeText(getApplicationContext(), "Please login at first!", Toast.LENGTH_LONG).show();
+                } else {
+                    sentHistoryActivity();
+                }
             }
         });
 
@@ -161,8 +170,6 @@ public class A8MainActivity extends AppCompatActivity {
 
     public void receivedHistoryActivity() {
         Intent intent = new Intent(this, ReceivedHistory.class);
-        String[] fromUsers, timestamps, stickerIDs;
-        Received r = new Received("a", "A", "A");
         intent.putParcelableArrayListExtra("receivedList", receivedList);
         intent.putStringArrayListExtra("stickers", (ArrayList<String>) stickers);
 
@@ -171,8 +178,10 @@ public class A8MainActivity extends AppCompatActivity {
 
 
     public void sentHistoryActivity() {
-//        Intent intent = new Intent(this, ReceivedHistory.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, SentHistory.class);
+        intent.putExtra("sentDict", (Serializable) sentDict);
+        intent.putStringArrayListExtra("stickers", (ArrayList<String>) stickers);
+        startActivity(intent);
     }
 
     // Connect database and add listener
@@ -250,15 +259,6 @@ public class A8MainActivity extends AppCompatActivity {
 
     }
 
-    // add to the sent history
-    private String sentString(Map<String, Integer> sentMap) {
-        StringBuilder sentBuilder = new StringBuilder("Sent:\n\n");
-        for (String sticker : sentMap.keySet()){
-            sentBuilder.append(sticker + " " + sentMap.get(sticker).toString() + "\n");
-        }
-
-        return sentBuilder.toString();
-    }
 
     // create notification
     public void createNotificationChannel() {
