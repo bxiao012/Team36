@@ -9,11 +9,13 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
@@ -57,8 +59,6 @@ public class A8MainActivity extends AppCompatActivity {
     private Button btnSend;
     private Button btnShowReceived;
     private Button btnShowSent;
-    private TextView txtReceived;
-    private TextView txtSent;
     private RadioButton btn1, btn2, btn3, btn4;
     private RadioGroup radioGroup;
     private ArrayList<RadioButton> radioButtons = new ArrayList<>();
@@ -66,6 +66,7 @@ public class A8MainActivity extends AppCompatActivity {
     private String selected;
 
 
+    private ArrayList<Received> receivedList = new ArrayList<>();
     private Map<String, Integer> sentDict = new HashMap<>();
     private List<String> stickers = new ArrayList<>();
 
@@ -80,8 +81,6 @@ public class A8MainActivity extends AppCompatActivity {
         toUser = (TextView) findViewById(R.id.toUser);
         btnLogin = (Button) findViewById(R.id.button3);
         btnSend = (Button) findViewById(R.id.button4);
-        txtReceived = (TextView) findViewById(R.id.textView4);
-        txtSent = (TextView) findViewById(R.id.textView5);
         btnShowReceived = (Button) findViewById(R.id.buttonShowReceived);
         btnShowSent = (Button) findViewById(R.id.buttonShowSent);
 
@@ -115,9 +114,6 @@ public class A8MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 helloCurrentUser.setText("Hello, " + loginUsername.getText().toString());
                 currentUser = loginUsername.getText().toString();
-                // init received and sent history
-                txtReceived.setText("Received");
-                txtSent.setText("Sent:\n\n");
                 for (int i = 0; i < STICKER_NUMBER; i++) {
                     String currStickerId = "sticker" + i;
                     sentDict.put(currStickerId, 0);
@@ -149,15 +145,7 @@ public class A8MainActivity extends AppCompatActivity {
         btnShowReceived.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int zeroLine = 0;
-                if (txtReceived.getMaxLines() == zeroLine) {
-                    txtReceived.setMaxLines(Integer.MAX_VALUE);
-                    btnShowReceived.setText("Close Received");
-                } else {
-                    txtReceived.setMaxLines(zeroLine);
-                    btnShowReceived.setText("Show Received");
-
-                }
+                receivedHistoryActivity();
             }
         });
 
@@ -165,18 +153,26 @@ public class A8MainActivity extends AppCompatActivity {
         btnShowSent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int zeroLine = 0;
-                if (txtSent.getMaxLines() == zeroLine) {
-                    txtSent.setMaxLines(Integer.MAX_VALUE);
-                    btnShowSent.setText("Close Sent");
-                } else {
-                    txtSent.setMaxLines(zeroLine);
-                    btnShowSent.setText("Show Sent");
-
-                }
+                sentHistoryActivity();
             }
         });
 
+    }
+
+    public void receivedHistoryActivity() {
+        Intent intent = new Intent(this, ReceivedHistory.class);
+        String[] fromUsers, timestamps, stickerIDs;
+        Received r = new Received("a", "A", "A");
+        intent.putParcelableArrayListExtra("receivedList", receivedList);
+        intent.putStringArrayListExtra("stickers", (ArrayList<String>) stickers);
+
+        startActivity(intent);
+    }
+
+
+    public void sentHistoryActivity() {
+//        Intent intent = new Intent(this, ReceivedHistory.class);
+//        startActivity(intent);
     }
 
     // Connect database and add listener
@@ -239,7 +235,7 @@ public class A8MainActivity extends AppCompatActivity {
     private void showMessage(DataSnapshot dataSnapshot) {
         RTDBMessage message = dataSnapshot.getValue(RTDBMessage.class);
         if (message.toUsername.equals(currentUser)){
-            txtReceived.append("\n\nfrom: " + message.fromUsername + "\nstickerID: " + message.stickerID + "\ntime: " + message.timestamp);
+            receivedList.add(new Received(message.fromUsername, message.timestamp, message.stickerID));
             createNotificationChannel();
             sendNotification(message.stickerID);
         }
@@ -247,7 +243,6 @@ public class A8MainActivity extends AppCompatActivity {
             String currSticker = message.stickerID;
             if (sentDict.containsKey(currSticker)) {
                 sentDict.put(currSticker, sentDict.get(currSticker) + 1);
-                txtSent.setText(sentString(sentDict));
             }
         }
 
@@ -319,10 +314,6 @@ public class A8MainActivity extends AppCompatActivity {
         outState.putInt("selectedButton", radioGroup.getCheckedRadioButtonId());
         outState.putString("selected", selected);
 
-        outState.putString("txtReceived", txtReceived.getText().toString());
-        outState.putString("txtSent", txtSent.getText().toString());
-        outState.putInt("txtReceivedMaxLine", txtReceived.getMaxLines());
-        outState.putInt("txtSentMaxLine", txtSent.getMaxLines());
     }
 
     @Override
@@ -336,16 +327,6 @@ public class A8MainActivity extends AppCompatActivity {
         selected = savedInstanceState.getString("selected");
 
         toUser.setText(savedInstanceState.getString("currentToUser"));
-        txtReceived.setText(savedInstanceState.getString("txtReceived"));
-        txtSent.setText(savedInstanceState.getString("txtSent"));
-
-        int txtReceivedMaxLine, txtSentMaxLine, zeroLine = 0;
-        txtReceivedMaxLine = savedInstanceState.getInt("txtReceivedMaxLine");
-        txtSentMaxLine = savedInstanceState.getInt("txtSentMaxLine");
-        txtReceived.setMaxLines(txtReceivedMaxLine);
-        txtSent.setMaxLines(txtSentMaxLine);
-        btnShowReceived.setText(txtReceivedMaxLine == zeroLine ? "Show Received" : "Close Received");
-        btnShowSent.setText(txtSentMaxLine == zeroLine ? "Show Sent" : "Close Sent");
 
 
     }

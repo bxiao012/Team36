@@ -158,25 +158,12 @@
                     android:layout_height="wrap_content"
                     android:text="Show Received" />
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="0"
-                    android:text="Received:" />
 
                 <Button
                     android:id="@+id/buttonShowSent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Show Sent" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="0"
-                    android:text="Sent:" />
 
 
 
