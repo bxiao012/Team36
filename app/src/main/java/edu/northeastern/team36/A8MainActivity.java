@@ -60,6 +60,8 @@ public class A8MainActivity extends AppCompatActivity {
     private Button btnSend;
     private Button btnShowReceived;
     private Button btnShowSent;
+    private Button btnAbout;
+    private TextView abtText;
     private RadioButton btn1, btn2, btn3, btn4;
     private RadioGroup radioGroup;
     private ArrayList<RadioButton> radioButtons = new ArrayList<>();
@@ -84,6 +86,8 @@ public class A8MainActivity extends AppCompatActivity {
         btnSend = (Button) findViewById(R.id.button4);
         btnShowReceived = (Button) findViewById(R.id.buttonShowReceived);
         btnShowSent = (Button) findViewById(R.id.buttonShowSent);
+        btnAbout = (Button) findViewById(R.id.buttonAbout);
+        abtText = (TextView) findViewById(R.id.about);
 
         ImageView image1 = findViewById(R.id.imageView1);
         ImageView image2 = findViewById(R.id.imageView2);
@@ -123,6 +127,16 @@ public class A8MainActivity extends AppCompatActivity {
                 connectDatabaseAddListener();
             }
         });
+
+        //About
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abtText.setText("Team36\nLu Wang, Beiduo Xiao, Kaiwen Zhou, Linhong Dai");
+            }
+        });
+
+
 
         // Send message - insert 1 message object into DB
         btnSend.setOnClickListener(new View.OnClickListener() {

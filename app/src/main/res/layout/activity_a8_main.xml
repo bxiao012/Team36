@@ -33,22 +33,70 @@
 
                 <TextView
                     android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
                     android:text="Please login at first"
-                    android:textSize="30dp" />
+                    android:textSize="25dp" />
 
-                <EditText
-                    android:id="@+id/userInput"
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="4dp" />
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Login" />
+                    android:layout_marginLeft="20dp"
+
+                    android:text="Username" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <EditText
+                        android:id="@+id/userInput"
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"/>
+
+                    <Button
+                        android:id="@+id/button3"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginLeft="30dp"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:text="Pick a sticker and send it out"
+                    android:textSize="25dp" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+
+                    android:text="Stickers" />
+
 
                 <LinearLayout
                     android:id="@+id/imageID"
@@ -137,33 +185,119 @@
                     </RadioGroup>
 
                 </LinearLayout>
-
-                <EditText
-                    android:id="@+id/toUser"
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="16dp" />
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Send" />
+                    android:layout_marginLeft="20dp"
+
+                    android:text="Recipient name" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
 
-                <Button
-                    android:id="@+id/buttonShowReceived"
-                    android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/toUser"
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"/>
+
+                    <Button
+                        android:id="@+id/button4"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginLeft="30dp"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Show Received" />
+
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:text="View history"
+                    android:textSize="25dp" />
 
 
-                <Button
-                    android:id="@+id/buttonShowSent"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Show Sent" />
+                    android:layout_marginTop="15dp">
+
+                    <Button
+                        android:id="@+id/buttonShowReceived"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Received"
+                        android:layout_marginLeft="70dp"/>
+
+
+                    <Button
+                        android:id="@+id/buttonShowSent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sent"
+                        android:layout_marginLeft="80dp"/>
+
+
+
+
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/buttonAbout"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="30dp"
+
+                        android:text="ABOUT"
+                        android:textSize="10dp"
+                        android:layout_marginLeft="80dp"/>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textAlignment="center"
+                        android:id="@+id/about">
+
+                    </TextView>
+
+
+
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+
 
 
 
