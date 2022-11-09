@@ -119,6 +119,7 @@ public class A8MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 helloCurrentUser.setText("Hello, " + loginUsername.getText().toString());
                 currentUser = loginUsername.getText().toString();
+                loginUsername.setEnabled(false);
                 for (int i = 0; i < STICKER_NUMBER; i++) {
                     String currStickerId = "sticker" + i;
                     sentDict.put(currStickerId, 0);
