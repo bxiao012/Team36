@@ -335,7 +335,10 @@ public class A8MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         helloCurrentUser.setText(savedInstanceState.getString("helloCurrentUser"));
-        currentUser = savedInstanceState.getString("currentUser"); // 可能出问题，把setOnclick改成函数这里也call一下
+        currentUser = savedInstanceState.getString("currentUser");
+        if (currentUser != null) {
+            loginUsername.setEnabled(false);
+        }
         connectDatabaseAddListener();
 
         radioGroup.check(savedInstanceState.getInt("selectedButton"));
