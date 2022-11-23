@@ -16,12 +16,14 @@ public class FinalProjectActivity extends AppCompatActivity {
     private RecyclerView postRecyclerView;
     private PostAdapter postAdapter;
     private ArrayList<Post> postArrayList;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_project);
 
+        username = getIntent().getStringExtra("username");
         postArrayList = new ArrayList<>();
         Post testPost = new Post("postID", "Kaiwen", "description: balabala", "Test Post"
         , "Genshin Impact", "2022.11.22", 4);

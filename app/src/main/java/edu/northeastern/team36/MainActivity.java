@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import edu.northeastern.team36.FinalProject.FinalProjectActivity;
+import edu.northeastern.team36.FinalProject.LogInActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void FinalProjectActivity(){
-        Intent intent = new Intent(this, FinalProjectActivity.class);
+        Intent intent = new Intent(this, LogInActivity.class);
         startActivity(intent);
     }
 }
