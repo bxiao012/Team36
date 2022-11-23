@@ -32,6 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         holder.titleTv.setText(currPost.getTitle());
         holder.postAuthorTv.setText(currPost.getAuthorName());
         holder.postTimeTv.setText(currPost.getTime());
+        holder.descriptionTv.setText(currPost.getDescription());
         holder.imageIv.setImageResource(R.drawable.apple);
     }
 
