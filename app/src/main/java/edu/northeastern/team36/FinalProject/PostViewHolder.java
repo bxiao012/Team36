@@ -13,8 +13,8 @@ import edu.northeastern.team36.R;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
 
-    public ImageButton detailBtn, applyBtn;
-    public TextView titleTv, postTimeTv, postAuthorTv, descriptionTv;
+    public ImageButton applyBtn;
+    public TextView titleTv, postTimeTv, postAuthorTv, descriptionTv, gameTv, seatTv;
     public ImageView imageIv;
 
     public PostViewHolder(@NonNull View itemView) {
@@ -24,6 +24,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         this.titleTv = itemView.findViewById(R.id.titleTv);
         this.postTimeTv = itemView.findViewById(R.id.postTimeTv);
         this.postAuthorTv = itemView.findViewById(R.id.postAuthorTv);
+        this.gameTv = itemView.findViewById(R.id.gameTv);
+        this.seatTv = itemView.findViewById(R.id.seatTv);
         this.descriptionTv = itemView.findViewById(R.id.descriptionTv);
         this.imageIv = itemView.findViewById(R.id.imageIv);
     }

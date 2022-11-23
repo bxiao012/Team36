@@ -63,7 +63,7 @@
         android:layout_below="@+id/postAuthorTv"
         android:layout_alignStart="@+id/postAuthorTv"
         android:layout_marginStart="3dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
@@ -73,7 +73,7 @@
         android:id="@+id/descriptionTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/postAuthorTv"
+        android:layout_below="@+id/gameTv"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -83,6 +83,30 @@
         android:maxLines="2"
         android:text="Please add more information here"
         android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/gameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/postAuthorTv"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/imageIv"
+        android:text="Game Name" />
+
+    <TextView
+        android:id="@+id/seatTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/postAuthorTv"
+        android:layout_marginStart="16dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/gameTv"
+        android:text="Seats: 4" />
 
     <ImageButton
         android:id="@+id/applyBtn"

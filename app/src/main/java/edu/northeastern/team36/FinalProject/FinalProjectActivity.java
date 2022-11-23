@@ -25,10 +25,10 @@ public class FinalProjectActivity extends AppCompatActivity {
 
         username = getIntent().getStringExtra("username");
         postArrayList = new ArrayList<>();
-        Post testPost = new Post("postID", "Kaiwen", "description: balabala", "Test Post"
+        Post testPost = new Post("postID", "Kaiwen Zhou", "description: balabala", "Test Post1"
         , "Genshin Impact", "2022.11.22", 4);
-        Post testPost1 = new Post("postID", "Kaiwen", "description: balabala", "Test Post"
-                , "Genshin Impact", "2022.11.22", 4);
+        Post testPost1 = new Post("postID", "Lu Wang", "description: balabala", "Test Post2"
+                , "Genshin Impact", "2022.11.23", 4);
         postArrayList.add(testPost);
         postArrayList.add(testPost1);
         postRecyclerView = findViewById(R.id.recyclerViewPosts);
