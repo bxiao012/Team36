@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import edu.northeastern.team36.FinalProject.FinalProjectActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button buttonA7 = (Button) findViewById(R.id.button);
         Button buttonA8 = (Button) findViewById(R.id.button2);
+        Button buttonFinal = (Button) findViewById(R.id.button3);
 
         buttonA7.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonFinal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FinalProjectActivity();
+            }
+        });
+
     }
 
     public void AtYourServiceActivity(){
@@ -39,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void A8MainActivity(){
         Intent intent = new Intent(this,A8MainActivity.class) ;
+        startActivity(intent);
+    }
+
+    public void FinalProjectActivity(){
+        Intent intent = new Intent(this, FinalProjectActivity.class);
         startActivity(intent);
     }
 }

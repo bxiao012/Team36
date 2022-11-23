@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom = "5dp"
+    android:background="@color/white"
+    android:padding="5dp">
+
+    <ImageButton
+        android:id="@+id/detailBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_next"
+        android:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_toStartOf="@id/detailBtn"
+        android:text = "Post Title"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/postInfoTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleTv"
+        android:layout_toStartOf="@id/detailBtn"
+        android:text = "Posted by John Colins November 20, 2022"
+        android:textColor="#939292"/>
+
+    <ImageView
+        android:id="@+id/imageIv"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/postInfoTv"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_image1"/>
+
+    <TextView
+        android:id="@+id/detailTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/postInfoTv"
+        android:layout_marginTop="5dp"
+        android:layout_toStartOf="@id/detailBtn"
+        android:layout_toEndOf="@id/imageIv"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Please add more information here"
+        android:textColor="@color/black" />
+
+    <ImageButton
+        android:id="@+id/joinBtn"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/postInfoTv"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="5dp"
+        android:src = "@drawable/ic_add"/>
+
+
+</RelativeLayout>
