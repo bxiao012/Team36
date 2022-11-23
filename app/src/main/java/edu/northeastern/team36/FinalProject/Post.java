@@ -1,17 +1,21 @@
 package edu.northeastern.team36.FinalProject;
 
-public class ModelPost {
+public class Post {
 
-    private String authorName, postID, description, title, time;
+    private String authorName, postID, description, title, time, game;
+    private int seats;
 
-    public ModelPost(String authorName, String postID, String description, String title) {
-        this.authorName = authorName;
+    public Post(String postID, String authorName, String description, String title, String game,
+                String time,  int seats) {
         this.postID = postID;
+        this.authorName = authorName;
         this.title = title;
         this.description = description;
         this.time = time;
-    }
+        this.game = game;
+        this.seats = seats;
 
+    }
 
     public String getAuthorName() {
         return authorName;
@@ -33,8 +37,8 @@ public class ModelPost {
         return description;
     }
 
-    public void setDescription(String published) {
-        this.description = published;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getTitle() {
@@ -53,4 +57,19 @@ public class ModelPost {
         this.time = time;
     }
 
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
 }
