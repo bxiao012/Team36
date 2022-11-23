@@ -21,8 +21,6 @@ public class FinalProjectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_project);
 
-        postsRv = findViewById(R.id.postsRv);
-        loadMoreBtn = findViewById(R.id.loadMoreBtn);
         postArrayList = new ArrayList<>();
     }
 
