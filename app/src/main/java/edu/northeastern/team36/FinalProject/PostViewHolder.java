@@ -1,5 +1,6 @@
 package edu.northeastern.team36.FinalProject;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,7 +19,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     public PostViewHolder(@NonNull View itemView) {
         super(itemView);
-        this.detailBtn = itemView.findViewById(R.id.detailBtn);
         this.applyBtn = itemView.findViewById(R.id.applyBtn);
 
         this.titleTv = itemView.findViewById(R.id.titleTv);

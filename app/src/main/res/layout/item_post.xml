@@ -6,26 +6,27 @@
     android:background="@color/white"
     android:padding="5dp">
 
-    <ImageButton
-        android:id="@+id/detailBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_next"
-        android:tint="@color/black" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/detailBtn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_marginStart="5dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        android:src="@drawable/ic_next"-->
+<!--        android:tint="@color/black" />-->
 
     <TextView
         android:id="@+id/titleTv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_toStartOf="@id/detailBtn"
         android:text="Post Title"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -33,23 +34,25 @@
 
     <TextView
         android:id="@+id/postAuthorTv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleTv"
+        android:layout_alignStart="@+id/titleTv"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="7dp"
-        android:layout_toStartOf="@id/detailBtn"
         android:text="Author: John Colins"
         android:textColor="#939292" />
 
     <TextView
         android:id="@+id/postTimeTv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/postAuthorTv"
+        android:layout_below="@+id/imageIv"
+        android:layout_alignStart="@+id/imageIv"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="14dp"
-        android:layout_toStartOf="@id/detailBtn"
         android:text="November 20, 2022"
         android:textColor="#939292" />
 
@@ -57,8 +60,10 @@
         android:id="@+id/imageIv"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_below="@id/postTimeTv"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/postAuthorTv"
+        android:layout_alignStart="@+id/postAuthorTv"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
@@ -66,11 +71,13 @@
 
     <TextView
         android:id="@+id/descriptionTv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/postTimeTv"
-        android:layout_marginTop="5dp"
-        android:layout_toStartOf="@id/detailBtn"
+        android:layout_below="@+id/postAuthorTv"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@+id/applyBtn"
         android:layout_toEndOf="@id/imageIv"
         android:ellipsize="end"
         android:maxLines="2"
@@ -81,10 +88,10 @@
         android:id="@+id/applyBtn"
         android:layout_width="50dp"
         android:layout_height="40dp"
-        android:layout_below="@id/postTimeTv"
+        android:layout_below="@+id/postAuthorTv"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="5dp"
         android:src="@drawable/ic_add" />
 

@@ -1,7 +1,9 @@
 package edu.northeastern.team36.FinalProject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -14,9 +16,11 @@ import edu.northeastern.team36.R;
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private final Context context;
     private final ArrayList<Post> postArrayList;
+    private final String username;
 
-    public PostAdapter(ArrayList<Post> postArrayList, Context context) {
+    public PostAdapter(ArrayList<Post> postArrayList, String username, Context context) {
         this.context = context;
+        this.username = username;
         this.postArrayList = postArrayList;
     }
 
@@ -34,6 +38,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         holder.postTimeTv.setText(currPost.getTime());
         holder.descriptionTv.setText(currPost.getDescription());
         holder.imageIv.setImageResource(R.drawable.apple);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), PostDetailActivity.class);
+                intent.putExtra("username", username);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

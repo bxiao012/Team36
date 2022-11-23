@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Team36"
         tools:targetApi="31">
         <activity
+            android:name=".FinalProject.PostDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".FinalProject.LogInActivity"
             android:exported="false" />
         <activity

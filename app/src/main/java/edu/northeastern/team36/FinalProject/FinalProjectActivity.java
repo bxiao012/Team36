@@ -27,10 +27,13 @@ public class FinalProjectActivity extends AppCompatActivity {
         postArrayList = new ArrayList<>();
         Post testPost = new Post("postID", "Kaiwen", "description: balabala", "Test Post"
         , "Genshin Impact", "2022.11.22", 4);
+        Post testPost1 = new Post("postID", "Kaiwen", "description: balabala", "Test Post"
+                , "Genshin Impact", "2022.11.22", 4);
         postArrayList.add(testPost);
+        postArrayList.add(testPost1);
         postRecyclerView = findViewById(R.id.recyclerViewPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(postArrayList, this);
+        postAdapter = new PostAdapter(postArrayList, username, this);
         postRecyclerView.setAdapter(postAdapter);
 
 
