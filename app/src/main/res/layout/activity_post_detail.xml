@@ -7,11 +7,140 @@
     tools:context=".FinalProject.PostDetailActivity">
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/seatTv2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Post Detail"
-        android:textSize="32dp"
-        tools:layout_editor_absoluteX="112dp"
-        tools:layout_editor_absoluteY="62dp" />
+        android:text="Seats: 4"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/gameTv2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.344"
+        app:layout_constraintStart_toEndOf="@+id/gameTv2"
+        app:layout_constraintTop_toTopOf="@+id/gameTv2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageIv2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_image1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postAuthorTv2"
+        app:layout_constraintVertical_bias="0.071" />
+
+    <TextView
+        android:id="@+id/descriptionTv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Please add more information here"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/imageIv2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.351"
+        app:layout_constraintStart_toEndOf="@+id/imageIv2"
+        app:layout_constraintTop_toBottomOf="@+id/seatTv2"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/postAuthorTv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Author: John Colins"
+        android:textColor="#939292"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.091"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/gameTv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game Name"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.144"
+        app:layout_constraintStart_toEndOf="@+id/imageIv2"
+        app:layout_constraintTop_toBottomOf="@+id/postAuthorTv2"
+        app:layout_constraintVertical_bias="0.063" />
+
+    <TextView
+        android:id="@+id/titleTv2"
+        android:layout_width="201dp"
+        android:layout_height="47dp"
+        android:text="Post Title"
+        android:textColor="@color/black"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <LinearLayout
+        android:layout_width="221dp"
+        android:layout_height="120dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.126"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageIv2"
+        app:layout_constraintVertical_bias="0.295">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/appliedUserTv"
+                android:layout_width="127dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Applied Users" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="38dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/selectedUserTv"
+                android:layout_width="127dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Selected Users" />
+
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="38dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
