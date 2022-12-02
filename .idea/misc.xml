@@ -3,13 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_a8_main.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/ic_launcher_team36_foreground.xml" value="0.209" />
+        <entry key="app/src/main/res/layout/activity_a8_main.xml" value="0.2781021118164062" />
         <entry key="app/src/main/res/layout/activity_at_your_service.xml" value="0.3920094807942707" />
-        <entry key="app/src/main/res/layout/activity_final_project.xml" value="0.2826086956521739" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.26811594202898553" />
+        <entry key="app/src/main/res/layout/activity_final_project.xml" value="0.4434814453125001" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.34895019531250004" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.26811594202898553" />
         <entry key="app/src/main/res/layout/loading_alert_dialog.xml" value="0.23716640748839446" />
         <entry key="app/src/main/res/layout/support_simple_spinner_dropdown_item.xml" value="0.17447916666666666" />
+        <entry key="app/src/main/res/menu/bottom_navigation.xml" value="0.32760416666666664" />
       </map>
     </option>
   </component>
