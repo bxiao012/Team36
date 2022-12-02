@@ -23,6 +23,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".FinalProject.ReviewsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".FinalProject.Review"
             android:exported="false">
             <meta-data
