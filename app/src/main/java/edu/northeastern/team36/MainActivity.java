@@ -68,11 +68,12 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        JsonObject id = new JsonObject();
-        JsonObject oid = new JsonObject();
-        oid.addProperty("$oid", "637ce196b5eb013ea20e701a");
-        id.add("_id", oid);
-        new DataFunctions().getReviewByUser(handleMessage,id);
+        //JsonObject id = new JsonObject();
+        //JsonObject oid = new JsonObject();
+        //oid.addProperty("$oid", "637ce196b5eb013ea20e701a");
+        //id.add("_id", oid);
+        //new DataFunctions().getReviewByUser(handleMessage,id);
+        new DataFunctions().getAllPosts(handleMessage);
 
 
 
