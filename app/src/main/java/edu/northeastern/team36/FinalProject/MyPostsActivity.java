@@ -11,14 +11,14 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import edu.northeastern.team36.R;
 
-public class ReviewsActivity extends AppCompatActivity {
+public class MyPostsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reviews);
+        setContentView(R.layout.activity_my_posts);
 
-        TextView title = (TextView) findViewById(R.id.reviewActivityTitle);
-        title.setText("This is review activity");
+        TextView title = (TextView) findViewById(R.id.MyPostsActivityTitle);
+        title.setText("These are my posts");
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
@@ -26,16 +26,20 @@ public class ReviewsActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    Intent intent0 = new Intent(ReviewsActivity.this,FinalProjectActivity.class);
+                    Intent intent0 = new Intent(MyPostsActivity.this,FinalProjectActivity.class);
                     startActivity(intent0);
                     break;
-                case R.id.nav_reviews:
-                    Intent intent1 = new Intent(ReviewsActivity.this, ReviewsActivity.class);
+                case R.id.nav_my_posts:
+                    Intent intent1 = new Intent(MyPostsActivity.this, MyPostsActivity.class);
                     startActivity(intent1);
                     break;
-                case R.id.nav_profile:
-                    Intent intent2 = new Intent(ReviewsActivity.this,ProfileActivity.class);
+                case R.id.nav_applied_posts:
+                    Intent intent2 = new Intent(MyPostsActivity.this, AppliedPostsActivity.class);
                     startActivity(intent2);
+                    break;
+                case R.id.nav_profile:
+                    Intent intent3 = new Intent(MyPostsActivity.this,ProfileActivity.class);
+                    startActivity(intent3);
                     break;
             }
 

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 
 import androidx.activity.result.ActivityResult;
@@ -14,29 +13,19 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import edu.northeastern.team36.MainActivity;
 import edu.northeastern.team36.R;
 
 public class FinalProjectActivity extends AppCompatActivity {
@@ -115,13 +104,17 @@ public class FinalProjectActivity extends AppCompatActivity {
                     Intent intent0 = new Intent(FinalProjectActivity.this, FinalProjectActivity.class);
                     startActivity(intent0);
                     break;
-                case R.id.nav_reviews:
-                    Intent intent1 = new Intent(FinalProjectActivity.this, ReviewsActivity.class);
+                case R.id.nav_my_posts:
+                    Intent intent1 = new Intent(FinalProjectActivity.this, MyPostsActivity.class);
                     startActivity(intent1);
                     break;
-                case R.id.nav_profile:
-                    Intent intent2 = new Intent(FinalProjectActivity.this,ProfileActivity.class);
+                case R.id.nav_applied_posts:
+                    Intent intent2 = new Intent(FinalProjectActivity.this,AppliedPostsActivity.class);
                     startActivity(intent2);
+                    break;
+                case R.id.nav_profile:
+                    Intent intent3 = new Intent(FinalProjectActivity.this,ProfileActivity.class);
+                    startActivity(intent3);
                     break;
             }
 
