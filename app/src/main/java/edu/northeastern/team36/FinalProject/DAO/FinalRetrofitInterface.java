@@ -17,6 +17,19 @@ public interface FinalRetrofitInterface {
     @POST("action/find")
     Call<JsonObject> getAllPosts(@Body JsonObject data);
 
+    @Headers({"Content-Type: application/json",
+            "api-key: 0zwKEn5FdEABALtu6HaOT3HRgoAgGWzPkGwRIq18CjMvHWH9W66yusDCmQGC7O8w"
+    })
+    @POST("action/insertOne")
+    Call<JsonObject> createPost(@Body JsonObject data);
+
+
+    @Headers({"Content-Type: application/json",
+            "api-key: 0zwKEn5FdEABALtu6HaOT3HRgoAgGWzPkGwRIq18CjMvHWH9W66yusDCmQGC7O8w"
+    })
+    @POST("action/insertOne")
+    Call<JsonObject> uploadImage(@Body JsonObject data);
+
 
 
 }

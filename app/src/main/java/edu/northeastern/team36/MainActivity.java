@@ -8,7 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.FinalProject.FinalProjectActivity;
@@ -48,6 +52,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //test data functions
+        TestCreatePost();
+
+
+
+
+
+    }
+
+    public void TestCreatePost(){
+        JsonObject post = new JsonObject();
+        post.addProperty("title", "The title !");
+        post.addProperty("content", "The content!");
+        post.addProperty("gameName", "Dota2");
+        post.addProperty("seat", 2);
+        post.addProperty("location", "Somewhere");
+        post.addProperty("gameTime", "2022-11-20 20:00:00");
+        post.addProperty("status", "In progress");
+        String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        post.addProperty("createTime", formatDate);
+        JsonObject owner = new JsonObject();
+        JsonObject ownerID = new JsonObject();
+        ownerID.addProperty("$oid", "637ce04eb5eb013ea20e7010");
+        owner.addProperty("name","user1");
+        owner.add("id", ownerID);
+        post.add("owner", owner);
+        post.add("applied", new JsonArray());
+        post.add("selected", new JsonArray());
+        JsonObject imageObj = new JsonObject();
+        imageObj.addProperty("img","data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAACoCAYAAAC2e+");
+        imageObj.addProperty("uploadTime", formatDate);
         MyRunnable handleMessage = new MyRunnable() {
             JsonObject message;
             @Override
@@ -62,21 +96,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
             private void handleMessage(JsonObject message) {
+                System.out.println("the post created " + message.toString());
                 title = (TextView) findViewById(R.id.textView);
                 title.setText(message.toString());
-                System.out.println("the posts " + message.toString());
             }
         };
 
-        //JsonObject id = new JsonObject();
-        //JsonObject oid = new JsonObject();
-        //oid.addProperty("$oid", "637ce196b5eb013ea20e701a");
-        //id.add("_id", oid);
-        //new DataFunctions().getReviewByUser(handleMessage,id);
-        new DataFunctions().getAllPosts(handleMessage);
-
-
-
+        new DataFunctions().createPost(handleMessage, post, imageObj);
     }
 
     public void AtYourServiceActivity(){
