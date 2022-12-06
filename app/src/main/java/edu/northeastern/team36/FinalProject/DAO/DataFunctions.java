@@ -245,6 +245,73 @@ public class DataFunctions {
         new Thread(createPostRunnable).start();
     }
 
+    class updatePostRunnable implements Runnable {
+        private JsonObject postId;
+        private JsonObject updateObj;
+        private MyRunnable runnable;
+        private Handler handler = new Handler();
+        public void setRunnable(MyRunnable runnable) {
+            this.runnable = runnable;
+        }
+        public void setPostId(JsonObject postId) {
+            this.postId = postId;
+        }
+        public void setUpdateObj(JsonObject updateObj) {
+            this.updateObj = updateObj;
+        }
+
+        @Override
+        public void run() {
+            Looper.prepare();
+
+            FinalRetrofitInterface retrofitInterface = (FinalRetrofitInterface) FinalRetrofitBuilder.getRetrofitInstance().create(FinalRetrofitInterface.class);
+
+            JsonObject req = new JsonObject();
+
+            req.addProperty("dataSource", "Cluster0");
+            req.addProperty("database", "team36_db");
+            req.addProperty("collection", "posts");
+            JsonObject filter = new JsonObject();
+            req.add("filter", postId);
+            JsonObject update = new JsonObject();
+            update.add("$set", updateObj);
+            req.add("update", update);
+
+            Call<JsonObject> call = retrofitInterface.updatePost(req);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    JsonObject res = response.body();
+                    Log.d("response", String.valueOf(response.body()));
+                    try {
+                        handler.post(runnable.setParam(res));
+                    } catch (NumberFormatException e) {
+                        Log.d("catch", String.valueOf(response.body()));
+
+                    } finally {
+                        Log.d("finally", String.valueOf(response.body()));
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.d("onFailure", "failure");
+                }
+            });
+
+        }
+    }
+    public void updatePost(MyRunnable runnable, JsonObject postId, JsonObject updateObj) {
+
+        updatePostRunnable updatePostRunnable = new updatePostRunnable();
+        updatePostRunnable.setPostId(postId);
+        updatePostRunnable.setUpdateObj(updateObj);
+        updatePostRunnable.setRunnable(runnable);
+        new Thread(updatePostRunnable).start();
+
+    }
+
 
 
 }

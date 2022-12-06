@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         //test data functions
         TestCreatePost();
+        //TestUpdatePost();
 
 
 
@@ -103,6 +104,42 @@ public class MainActivity extends AppCompatActivity {
         };
 
         new DataFunctions().createPost(handleMessage, post, imageObj);
+    }
+    public void TestUpdatePost(){
+        JsonObject postId = new JsonObject();
+        JsonObject id = new JsonObject();
+        id.addProperty("$oid","638d86847084b05cc1d341f6");
+        postId.add("_id", id);
+
+        JsonObject applied = new JsonObject();
+        JsonObject appliedOne = new JsonObject();
+        appliedOne.addProperty("name","user2");
+        JsonObject oid = new JsonObject();
+        oid.addProperty("$oid", "637ce04eb5eb013ea20e7011");
+        appliedOne.add("id",oid);
+        JsonArray appliedArr = new JsonArray();
+        appliedArr.add(appliedOne);
+        applied.add("applied", appliedArr);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the post UPDATED " + message.toString());
+            }
+        };
+
+        new DataFunctions().updatePost(handleMessage, postId, applied);
     }
 
     public void AtYourServiceActivity(){
