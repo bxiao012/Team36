@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //test data functions
-        TestCreatePost();
+        //TestCreatePost();
         //TestUpdatePost();
 
 
@@ -106,11 +106,25 @@ public class MainActivity extends AppCompatActivity {
         new DataFunctions().createPost(handleMessage, post, imageObj);
     }
     public void TestUpdatePost(){
+        /*
+        Input data:
+        {
+            "applied": [
+                            {
+                                "name": "user2"
+                                "id": {
+                                        "$oid": "637ce04eb5eb013ea20e7010"
+                                        }
+                             }
+                       ]
+        }
+
+         */
         JsonObject postId = new JsonObject();
         JsonObject id = new JsonObject();
-        id.addProperty("$oid","638d86847084b05cc1d341f6");
+        // Post ID
+        id.addProperty("$oid","638fdbd6ded805e0ad540143");
         postId.add("_id", id);
-
         JsonObject applied = new JsonObject();
         JsonObject appliedOne = new JsonObject();
         appliedOne.addProperty("name","user2");
@@ -119,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
         appliedOne.add("id",oid);
         JsonArray appliedArr = new JsonArray();
         appliedArr.add(appliedOne);
-        applied.add("applied", appliedArr);
+        // "selected" for inserting into selected and "applied" for inserting into applied
+        applied.add("selected", appliedArr);
 
         MyRunnable handleMessage = new MyRunnable() {
             JsonObject message;
