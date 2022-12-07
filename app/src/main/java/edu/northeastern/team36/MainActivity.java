@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //test data functions
-        TestCreatePost();
+//        TestCreatePost();
 
 
 
@@ -60,50 +60,50 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void TestCreatePost(){
-        JsonObject post = new JsonObject();
-        post.addProperty("title", "The title !");
-        post.addProperty("content", "The content!");
-        post.addProperty("gameName", "Dota2");
-        post.addProperty("seat", 2);
-        post.addProperty("location", "Somewhere");
-        post.addProperty("gameTime", "2022-11-20 20:00:00");
-        post.addProperty("status", "In progress");
-        String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        post.addProperty("createTime", formatDate);
-        JsonObject owner = new JsonObject();
-        JsonObject ownerID = new JsonObject();
-        ownerID.addProperty("$oid", "637ce04eb5eb013ea20e7010");
-        owner.addProperty("name","user1");
-        owner.add("id", ownerID);
-        post.add("owner", owner);
-        post.add("applied", new JsonArray());
-        post.add("selected", new JsonArray());
-        JsonObject imageObj = new JsonObject();
-        imageObj.addProperty("img","data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAACoCAYAAAC2e+");
-        imageObj.addProperty("uploadTime", formatDate);
-        MyRunnable handleMessage = new MyRunnable() {
-            JsonObject message;
-            @Override
-            public MyRunnable setParam(JsonObject param) {
-                message = param;
-                return this;
-            }
-
-            @Override
-            public void run() {
-                handleMessage(message);
-            }
-
-            private void handleMessage(JsonObject message) {
-                System.out.println("the post created " + message.toString());
-                title = (TextView) findViewById(R.id.textView);
-                title.setText(message.toString());
-            }
-        };
-
-        new DataFunctions().createPost(handleMessage, post, imageObj);
-    }
+//    public void TestCreatePost(){
+//        JsonObject post = new JsonObject();
+//        post.addProperty("title", "The title !");
+//        post.addProperty("content", "The content!");
+//        post.addProperty("gameName", "Dota2");
+//        post.addProperty("seat", 2);
+//        post.addProperty("location", "Somewhere");
+//        post.addProperty("gameTime", "2022-11-20 20:00:00");
+//        post.addProperty("status", "In progress");
+//        String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        post.addProperty("createTime", formatDate);
+//        JsonObject owner = new JsonObject();
+//        JsonObject ownerID = new JsonObject();
+//        ownerID.addProperty("$oid", "637ce04eb5eb013ea20e7010");
+//        owner.addProperty("name","user1");
+//        owner.add("id", ownerID);
+//        post.add("owner", owner);
+//        post.add("applied", new JsonArray());
+//        post.add("selected", new JsonArray());
+//        JsonObject imageObj = new JsonObject();
+//        imageObj.addProperty("img","data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAACoCAYAAAC2e+");
+//        imageObj.addProperty("uploadTime", formatDate);
+//        MyRunnable handleMessage = new MyRunnable() {
+//            JsonObject message;
+//            @Override
+//            public MyRunnable setParam(JsonObject param) {
+//                message = param;
+//                return this;
+//            }
+//
+//            @Override
+//            public void run() {
+//                handleMessage(message);
+//            }
+//
+//            private void handleMessage(JsonObject message) {
+//                System.out.println("the post created " + message.toString());
+//                title = (TextView) findViewById(R.id.textView);
+//                title.setText(message.toString());
+//            }
+//        };
+//
+//        new DataFunctions().createPost(handleMessage, post, imageObj);
+//    }
 
     public void AtYourServiceActivity(){
         Intent intent = new Intent(this,AtYourServiceActivity.class) ;

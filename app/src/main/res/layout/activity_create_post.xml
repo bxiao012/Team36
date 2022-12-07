@@ -111,8 +111,8 @@
                 android:layout_height="55dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="time"
-                android:hint="Time" />
+                android:inputType="datetime"
+                android:hint="eg: 2022-12-05 17:36:00" />
 
         </LinearLayout>
 
@@ -161,4 +161,27 @@
                 android:hint="Seats" />
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/locationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="location"
+        app:layout_constraintBottom_toTopOf="@+id/submitButton"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.506" />
+
+    <Button
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:text="Image"
+        app:layout_constraintBottom_toTopOf="@+id/submitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.506" />
 </androidx.constraintlayout.widget.ConstraintLayout>
