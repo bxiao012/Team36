@@ -54,10 +54,7 @@ public class MainActivity extends AppCompatActivity {
         //test data functions
         //TestCreatePost();
         //TestUpdatePost();
-
-
-
-
+        //TestFindUser();
 
     }
 
@@ -155,6 +152,32 @@ public class MainActivity extends AppCompatActivity {
         };
 
         new DataFunctions().updatePost(handleMessage, postId, applied);
+    }
+    public void TestFindUser(){
+        // Returns user document or {"documents":[]}
+        JsonObject userObj = new JsonObject();
+        userObj.addProperty("name","user1");
+        userObj.addProperty("password", "123456");
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the user " + message.toString());
+            }
+        };
+
+        new DataFunctions().findUser(handleMessage, userObj);
     }
 
     public void AtYourServiceActivity(){
