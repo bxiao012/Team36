@@ -78,7 +78,7 @@ public class AppliedPostsActivity extends AppCompatActivity {
 
 
     /*
-    Helper Function to add all applied posts to postArrayList
+        Helper Function to add all applied posts to postArrayList
      */
     private void getAppliedPosts() {
         // create handleMessage
