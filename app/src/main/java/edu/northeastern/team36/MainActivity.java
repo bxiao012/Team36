@@ -52,65 +52,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //test data functions
-
-//        TestCreatePost();
-
+        //TestCreatePost();
+        //TestCreatePost();
+        //TestUpdatePost();
+        //TestFindUser();
+        //TestFindPosts();
+        //TestCreateReview();
 
 
 
 
     }
 
-//    public void TestCreatePost(){
-//        JsonObject post = new JsonObject();
-//        post.addProperty("title", "The title !");
-//        post.addProperty("content", "The content!");
-//        post.addProperty("gameName", "Dota2");
-//        post.addProperty("seat", 2);
-//        post.addProperty("location", "Somewhere");
-//        post.addProperty("gameTime", "2022-11-20 20:00:00");
-//        post.addProperty("status", "In progress");
-//        String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//        post.addProperty("createTime", formatDate);
-//        JsonObject owner = new JsonObject();
-//        JsonObject ownerID = new JsonObject();
-//        ownerID.addProperty("$oid", "637ce04eb5eb013ea20e7010");
-//        owner.addProperty("name","user1");
-//        owner.add("id", ownerID);
-//        post.add("owner", owner);
-//        post.add("applied", new JsonArray());
-//        post.add("selected", new JsonArray());
-//        JsonObject imageObj = new JsonObject();
-//        imageObj.addProperty("img","data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAACoCAYAAAC2e+");
-//        imageObj.addProperty("uploadTime", formatDate);
-//        MyRunnable handleMessage = new MyRunnable() {
-//            JsonObject message;
-//            @Override
-//            public MyRunnable setParam(JsonObject param) {
-//                message = param;
-//                return this;
-//            }
-//
-//            @Override
-//            public void run() {
-//                handleMessage(message);
-//            }
-//
-//            private void handleMessage(JsonObject message) {
-//                System.out.println("the post created " + message.toString());
-//                title = (TextView) findViewById(R.id.textView);
-//                title.setText(message.toString());
-//            }
-//        };
-//
-//        new DataFunctions().createPost(handleMessage, post, imageObj);
-//    }
 
-        //TestCreatePost();
-        //TestUpdatePost();
-        //TestFindUser();
 
-//    }
 
     public void TestCreatePost(){
         JsonObject post = new JsonObject();
@@ -233,6 +188,90 @@ public class MainActivity extends AppCompatActivity {
 
         new DataFunctions().findUser(handleMessage, userObj);
     }
+    public void TestFindPosts(){
+        // Returns Posts by owner id
+        JsonObject ownerObj = new JsonObject();
+        JsonObject ownerId = new JsonObject();
+        ownerId.addProperty("$oid","637ce04eb5eb013ea20e7010");
+        ownerObj.add("owner.id", ownerId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the posts " + message.toString());
+            }
+        };
+
+        new DataFunctions().findPosts(handleMessage, ownerObj);
+    }
+    public void TestCreateReview(){
+        /* Input data format (reviewObj):
+{
+  "from": {
+    "$oid": "637ce04eb5eb013ea20e7010"
+  },
+  "to": {
+    "$oid": "637ce04eb5eb013ea20e7011"
+  },
+  "content": "GREATE PLAYER!",
+  "rate": 5,
+  "createTime": "2022-11-21 09:00:00",
+  "postId": {
+    "$oid": "637ce23db5eb013ea20e702b"
+  }
+}
+
+
+
+         */
+        JsonObject reviewObj = new JsonObject();
+        JsonObject toId = new JsonObject();
+        toId.addProperty("$oid","637ce04eb5eb013ea20e7011");
+        JsonObject fromId = new JsonObject();
+        fromId.addProperty("$oid", "637ce04eb5eb013ea20e7010");
+        JsonObject postId = new JsonObject();
+        postId.addProperty("$oid","637ce23db5eb013ea20e702b");
+        reviewObj.add("from", fromId);
+        reviewObj.add("to", toId);
+        reviewObj.add("postId", postId);
+        reviewObj.addProperty("content", "good...");
+        reviewObj.addProperty("rate", 5);
+        String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        reviewObj.addProperty("createTime", formatDate);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the review created " + message.toString());
+            }
+        };
+
+        new DataFunctions().createReview(handleMessage, reviewObj);
+    }
+
+
 
 
     public void AtYourServiceActivity(){
