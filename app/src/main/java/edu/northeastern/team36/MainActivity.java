@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         //TestFindUser();
         //TestFindPosts();
         //TestCreateReview();
+        //TestFindReviews();
 
 
 
@@ -270,6 +271,34 @@ public class MainActivity extends AppCompatActivity {
 
         new DataFunctions().createReview(handleMessage, reviewObj);
     }
+    public void TestFindReviews(){
+        // Find reviews "to" somebody
+        JsonObject toObj = new JsonObject();
+        JsonObject toId = new JsonObject();
+        toId.addProperty("$oid","637ce04eb5eb013ea20e7011");
+        toObj.add("to", toId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the reviews " + message.toString());
+            }
+        };
+
+        new DataFunctions().findReviews(handleMessage, toObj);
+    }
+
 
 
 
