@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         //TestUpdatePost();
         //TestFindUser();
         //TestFindPosts();
+        //TestCreateReview();
 
 
 
@@ -214,6 +215,63 @@ public class MainActivity extends AppCompatActivity {
 
         new DataFunctions().findPosts(handleMessage, ownerObj);
     }
+    public void TestCreateReview(){
+        /* Input data format (reviewObj):
+{
+  "from": {
+    "$oid": "637ce04eb5eb013ea20e7010"
+  },
+  "to": {
+    "$oid": "637ce04eb5eb013ea20e7011"
+  },
+  "content": "GREATE PLAYER!",
+  "rate": 5,
+  "createTime": "2022-11-21 09:00:00",
+  "postId": {
+    "$oid": "637ce23db5eb013ea20e702b"
+  }
+}
+
+
+
+         */
+        JsonObject reviewObj = new JsonObject();
+        JsonObject toId = new JsonObject();
+        toId.addProperty("$oid","637ce04eb5eb013ea20e7011");
+        JsonObject fromId = new JsonObject();
+        fromId.addProperty("$oid", "637ce04eb5eb013ea20e7010");
+        JsonObject postId = new JsonObject();
+        postId.addProperty("$oid","637ce23db5eb013ea20e702b");
+        reviewObj.add("from", fromId);
+        reviewObj.add("to", toId);
+        reviewObj.add("postId", postId);
+        reviewObj.addProperty("content", "good...");
+        reviewObj.addProperty("rate", 5);
+        String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        reviewObj.addProperty("createTime", formatDate);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the review created " + message.toString());
+            }
+        };
+
+        new DataFunctions().createReview(handleMessage, reviewObj);
+    }
+
+
 
 
     public void AtYourServiceActivity(){
