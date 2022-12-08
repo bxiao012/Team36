@@ -19,11 +19,12 @@ import edu.northeastern.team36.R;
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private final Context context;
     private final ArrayList<Post> postArrayList;
-    private final String username;
+    private final String username, userID;
 
-    public PostAdapter(ArrayList<Post> postArrayList, String username, Context context) {
+    public PostAdapter(ArrayList<Post> postArrayList, String username, String userID, Context context) {
         this.context = context;
         this.username = username;
+        this.userID = userID;
         this.postArrayList = postArrayList;
     }
 
@@ -55,6 +56,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 String game = currPost.getGame();
                 Intent intent = new Intent(view.getContext(), PostDetailActivity.class);
                 intent.putExtra("username", username);
+                intent.putExtra("userID", userID);
                 intent.putExtra("EXTRA_TITLE", title);
                 intent.putExtra("AUTHOR_NAME", postAuthor);
                 intent.putExtra("DESCRIPTION", description);
