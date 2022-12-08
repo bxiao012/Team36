@@ -46,7 +46,7 @@ public class FinalProjectActivity extends AppCompatActivity {
     private RecyclerView postRecyclerView;
     private PostAdapter postAdapter;
     private ArrayList<Post> postArrayList;
-    private String username;
+    private String username, userID;
     private String title, game, authorName, time, description;
     private int seats;
 
@@ -58,6 +58,7 @@ public class FinalProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_final_project);
 
         username = getIntent().getStringExtra("username");
+        userID = getIntent().getStringExtra("userID");
         postArrayList = new ArrayList<>();
 
         // call back the post details from the createPostActivity
@@ -85,6 +86,7 @@ public class FinalProjectActivity extends AppCompatActivity {
                     }
                 }
         );
+
         // add a new post by clicking the fab
         fab = (FloatingActionButton) findViewById(R.id.addNewPostFAB);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +101,7 @@ public class FinalProjectActivity extends AppCompatActivity {
         // fill the postRecyclerView
         postRecyclerView = findViewById(R.id.recyclerViewPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(postArrayList, username, this);
+        postAdapter = new PostAdapter(postArrayList, username, userID, this);
         postRecyclerView.setAdapter(postAdapter);
 
 
