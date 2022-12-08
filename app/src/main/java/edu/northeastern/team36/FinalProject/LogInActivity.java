@@ -43,12 +43,6 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 findUser();
-//                if (true) {
-//                    // update username
-//                    finalProjectActivity();
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "Error Message",Toast.LENGTH_SHORT).show();
-//                }
             }
         });
 
@@ -106,6 +100,8 @@ public class LogInActivity extends AppCompatActivity {
         intent.putExtra("username", username);
         intent.putExtra("userID", userID);
         startActivity(intent);
+        // finish the LogInActivity to avoid returning to the LogInActivity
+//        finish();
     }
 
     @Override
