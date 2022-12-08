@@ -23,12 +23,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.core.Tag;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import edu.northeastern.team36.FinalProject.DAO.DataFunctions;
+import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class FinalProjectActivity extends AppCompatActivity {
+    private static final String TAG = "AppCompatActivity";
     private RecyclerView postsRv;
     private RecyclerView postRecyclerView;
     private PostAdapter postAdapter;
@@ -83,17 +96,51 @@ public class FinalProjectActivity extends AppCompatActivity {
         });
 
 
-//        Post testPost = new Post("postID", "Kaiwen Zhou", "description: balabala", "Test Post1"
-//        , "Genshin Impact", "2022.11.22", 4);
-//        Post testPost1 = new Post("postID", "Lu Wang", "description: balabala", "Test Post2"
-//                , "Genshin Impact", "2022.11.23", 4);
-//        postArrayList.add(testPost);
-//        postArrayList.add(testPost1);
-
+        // fill the postRecyclerView
         postRecyclerView = findViewById(R.id.recyclerViewPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         postAdapter = new PostAdapter(postArrayList, username, this);
         postRecyclerView.setAdapter(postAdapter);
+
+
+        // get all posts
+        MyRunnable handleMessageAllPosts = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessageAllPosts(message);
+            }
+
+            private void handleMessageAllPosts(JsonObject message) {
+                JsonArray postArray = message.getAsJsonArray("documents");
+
+                for (int i = 0; i < postArray.size(); i++) {
+                    JsonElement postJsonObject = postArray.get(i);
+//                    System.out.println(postJsonObject);
+                    HashMap postMap = new Gson().fromJson(postJsonObject.toString(), HashMap.class);
+
+                    Double doubleSeat = (Double) postMap.get("seat");
+                    Map ownerMap = (Map) postMap.get("owner");
+                    String ownerName = (String) ownerMap.get("name");
+//                    System.out.println(ownerName);
+                    Post post = new Post(postMap.get("_id").toString(), ownerName,
+                            postMap.get("content").toString(), postMap.get("title").toString(), postMap.get("gameName").toString(),
+                            postMap.get("createTime").toString(), doubleSeat.intValue());
+                    postArrayList.add(post);
+//                    postAdapter.notifyItemChanged(i);
+                }
+                postAdapter.notifyDataSetChanged();
+            }
+
+        };
+
+        new DataFunctions().getAllPosts(handleMessageAllPosts);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
