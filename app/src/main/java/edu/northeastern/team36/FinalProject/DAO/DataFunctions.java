@@ -492,6 +492,66 @@ public class DataFunctions {
 
     }
 
+    class findReviewsRunnable implements Runnable {
+        private JsonObject paramObj;
+        private MyRunnable runnable;
+        private Handler handler = new Handler();
+        public void setRunnable(MyRunnable runnable) {
+            this.runnable = runnable;
+        }
+        public void setParamObj(JsonObject paramObj) {
+            this.paramObj = paramObj;
+        }
+
+        @Override
+        public void run() {
+            Looper.prepare();
+
+            FinalRetrofitInterface retrofitInterface = (FinalRetrofitInterface) FinalRetrofitBuilder.getRetrofitInstance().create(FinalRetrofitInterface.class);
+            JsonObject req = new JsonObject();
+
+
+            req.addProperty("dataSource", "Cluster0");
+            req.addProperty("database", "team36_db");
+            req.addProperty("collection", "reviews");
+            req.add("filter", paramObj);
+
+
+
+            Call<JsonObject> call = retrofitInterface.findReviews(req);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    JsonObject res = response.body();
+                    Log.d("response", String.valueOf(response.body()));
+                    try {
+                        handler.post(runnable.setParam(res));
+                    } catch (NumberFormatException e) {
+                        Log.d("catch", String.valueOf(response.body()));
+
+                    } finally {
+                        Log.d("finally", String.valueOf(response.body()));
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.d("onFailure", "failure");
+                }
+            });
+
+        }
+    }
+    public void findReviews(MyRunnable runnable, JsonObject paramObj) {
+
+        findReviewsRunnable findReviewsRunnable = new findReviewsRunnable();
+        findReviewsRunnable.setParamObj(paramObj);
+        findReviewsRunnable.setRunnable(runnable);
+        new Thread(findReviewsRunnable).start();
+
+    }
+
 
 
 }
