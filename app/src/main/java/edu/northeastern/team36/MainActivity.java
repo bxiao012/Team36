@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //TestFindPosts();
         //TestCreateReview();
         //TestFindReviews();
+        //TestFindImage();
 
 
 
@@ -297,6 +298,32 @@ public class MainActivity extends AppCompatActivity {
         };
 
         new DataFunctions().findReviews(handleMessage, toObj);
+    }
+    public void TestFindImage(){
+        JsonObject imageObj = new JsonObject();
+        JsonObject imageId = new JsonObject();
+        imageId.addProperty("$oid","637ce375b5eb013ea20e7042");
+        imageObj.add("_id", imageId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the image " + message.toString());
+            }
+        };
+
+        new DataFunctions().findImage(handleMessage, imageObj);
     }
 
 
