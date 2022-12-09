@@ -68,6 +68,8 @@ public class CreatePostActivity extends AppCompatActivity {
     Button locationBtn;
     Button imageBtn;
     private String location;
+    private String username;
+    private String userID;
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     ImageView imageV;
@@ -93,6 +95,8 @@ public class CreatePostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
+        username = getIntent().getStringExtra("username");
+        userID = getIntent().getStringExtra("username");
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(CreatePostActivity.this);
         // location request

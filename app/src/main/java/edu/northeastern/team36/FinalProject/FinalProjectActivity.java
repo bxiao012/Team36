@@ -93,6 +93,8 @@ public class FinalProjectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FinalProjectActivity.this, CreatePostActivity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("userID", userID);
                 activityLauncher.launch(intent);
             }
         });
