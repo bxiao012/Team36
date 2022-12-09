@@ -2,6 +2,10 @@ package edu.northeastern.team36.FinalProject;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -13,15 +17,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -47,7 +54,10 @@ import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class CreatePostActivity extends AppCompatActivity {
-    int LOCATION_REQUEST_CODE = 10001;
+    private static final int REQUEST_IMAGE_CAPTURE = 101;
+    private static final int LOCATION_REQUEST_CODE = 10001;
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
     EditText titleInput;
     EditText gameInput;
     EditText authorNameInput;
@@ -60,7 +70,9 @@ public class CreatePostActivity extends AppCompatActivity {
     private String location;
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
+    ImageView imageV;
 
+    // location callback
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -92,6 +104,44 @@ public class CreatePostActivity extends AppCompatActivity {
 
         // get location
         locationBtn = (Button) findViewById(R.id.locationButton);
+
+        //get image
+        imageV = (ImageView) findViewById(R.id.imageView);
+        ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        // Add same code that you want to add in onActivityResult method
+                        if(result.getResultCode() == CAMERA_REQUEST) {
+                            Intent intent = result.getData();
+                            Bundle im = intent.getExtras();
+                            Bitmap imBitmap = (Bitmap) im.get("camera result");
+                            imageV.setImageBitmap(imBitmap);
+                        }
+                    }
+                });
+
+        // launch picture activity
+        imageBtn = (Button) findViewById(R.id.imageButton);
+        imageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (CreatePostActivity.this.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                {
+                    Log.d(TAG, "onClick: ask for permission");
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                }
+                else
+                {
+                    Log.d(TAG, "onClick: take picture");
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityIntent.launch(cameraIntent);
+
+                }
+            }
+        });
 
         titleInput = (EditText) findViewById(R.id.editTextTitle);
         gameInput = (EditText) findViewById(R.id.editTextGame);
@@ -226,6 +276,15 @@ public class CreatePostActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions
                         (this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_REQUEST_CODE);
             }
+        }
+    }
+
+    // take picture
+    public void takePicture(View view) {
+        Intent image = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if(image.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(image, REQUEST_IMAGE_CAPTURE);
         }
     }
 
