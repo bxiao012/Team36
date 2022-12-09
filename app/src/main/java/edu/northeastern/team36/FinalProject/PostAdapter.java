@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,12 @@ import java.util.ArrayList;
 import edu.northeastern.team36.R;
 
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
+    private static final String TAG = "PostAdapter";
     private final Context context;
     private final ArrayList<Post> postArrayList;
     private final String username, userID;
 
-    public PostAdapter(ArrayList<Post> postArrayList, String username, String userID, Context context) {
+    public PostAdapter(Context context, ArrayList<Post> postArrayList, String username, String userID) {
         this.context = context;
         this.username = username;
         this.userID = userID;
@@ -41,9 +44,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         holder.postAuthorTv.setText(currPost.getAuthorName());
         holder.postTimeTv.setText(currPost.getTime());
         holder.gameTv.setText(currPost.getGame());
-        holder.seatTv.setText("Seats: " + currPost.getSeats());
         holder.descriptionTv.setText(currPost.getDescription());
-        holder.imageIv.setImageResource(R.drawable.apple);
+        String seatsRemaining = "Seats: " + currPost.getSelected().toString() + " / "
+                + currPost.getSeats().toString();
+        holder.seatTv.setText(seatsRemaining);
+
+        // set bitmap to imageView
+        try {
+//            Log.e(TAG, "post imgStr: " + currPost.getImgStr());
+            byte[] imgByte = Base64.decode(currPost.getImgStr(), Base64.NO_WRAP);
+//            Log.e(TAG, "imgByte :" + imgByte.toString());
+            Bitmap imgBitmap = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+            holder.imageIv.setImageBitmap(imgBitmap);
+        } catch (Exception e) {
+            Log.e(TAG, "Error message: " + e.getMessage());
+        }
 
         // pass details to postDetailActivity
         holder.itemView.setOnClickListener(new View.OnClickListener() {

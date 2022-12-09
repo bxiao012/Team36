@@ -13,8 +13,10 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import android.annotation.SuppressLint;
+import android.widget.Adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.CircularArray;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.northeastern.team36.FinalProject.DAO.DataFunctions;
@@ -45,9 +48,9 @@ public class FinalProjectActivity extends AppCompatActivity {
     private RecyclerView postsRv;
     private RecyclerView postRecyclerView;
     private PostAdapter postAdapter;
-    private ArrayList<Post> postArrayList;
+    private  ArrayList<Post> postArrayList;
     private String username, userID;
-    private String title, game, authorName, time, description;
+    private String title, game, authorName, time, description, imgStr;
     private int seats;
 
     FloatingActionButton fab;
@@ -80,7 +83,7 @@ public class FinalProjectActivity extends AppCompatActivity {
                                 time = data[3];
                                 description = data[4];
                                 seats = Integer.parseInt(data[5]);
-                                postArrayList.add(new Post("postId", authorName, description, title, game, time, seats));
+//                                postArrayList.add(new Post("postId", authorName, description, title, game, time, seats));
                             }
                         }
                     }
@@ -103,7 +106,7 @@ public class FinalProjectActivity extends AppCompatActivity {
         // fill the postRecyclerView
         postRecyclerView = findViewById(R.id.recyclerViewPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(postArrayList, username, userID, this);
+        postAdapter = new PostAdapter(this, postArrayList, username, userID);
         postRecyclerView.setAdapter(postAdapter);
 
         getAllPosts();
@@ -162,6 +165,8 @@ public class FinalProjectActivity extends AppCompatActivity {
             }
 
             private void handleMessageAllPosts(JsonObject message) {
+                // empty the postArrayList
+//                postArrayList = new ArrayList<>();
                 JsonArray postArray = message.getAsJsonArray("documents");
 
                 for (int i = 0; i < postArray.size(); i++) {
@@ -171,15 +176,20 @@ public class FinalProjectActivity extends AppCompatActivity {
 
                     Double doubleSeat = (Double) postMap.get("seat");
                     Map ownerMap = (Map) postMap.get("owner");
-                    String ownerName = (String) ownerMap.get("name");
-//                    System.out.println(ownerName);
-                    Post post = new Post(postMap.get("_id").toString(), ownerName,
-                            postMap.get("content").toString(), postMap.get("title").toString(), postMap.get("gameName").toString(),
-                            postMap.get("createTime").toString(), doubleSeat.intValue());
+                    List selectedUsers = (List) postMap.get("selected");
+//                    Log.e(TAG, "In getAllPost: " + postMap.get("image").toString());
+
+                    Post post = new Post(postMap.get("_id").toString(), ownerMap.get("name").toString(),
+                            postMap.get("content").toString(), postMap.get("title").toString(),
+                            postMap.get("gameName").toString(), postMap.get("createTime").toString(),
+                            postMap.get("image").toString(), doubleSeat.intValue(), selectedUsers.size());
                     postArrayList.add(post);
-//                    postAdapter.notifyItemChanged(i);
                 }
-                postAdapter.notifyDataSetChanged();
+
+                // update imgStr in posts
+                for (int i = 0; i < postArrayList.size(); i++) {
+                    findImageByImageId(i);
+                }
             }
 
         };
@@ -187,6 +197,46 @@ public class FinalProjectActivity extends AppCompatActivity {
         new DataFunctions().getAllPosts(handleMessageAllPosts);
     }
 
+    private void findImageByImageId(int i){
+        JsonObject imageObj = new JsonObject();
+        JsonObject imageId = new JsonObject();
+        Post currPost = postArrayList.get(i);
+//        Log.e(TAG, currPost.getImgStr());
+        imageId.addProperty("$oid", currPost.getImgStr());
+        imageObj.add("_id", imageId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                if (message != null) {
+                    JsonArray imgArray = message.getAsJsonArray("documents");
+
+                    HashMap imgMap = new Gson().fromJson(imgArray.get(0).toString(), HashMap.class);
+                    String imgStr = imgMap.get("img").toString();
+                    // delete the prefix("data:image/.*;base64,")
+                    String[] imgList = imgStr.split(",");
+                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
+                    currPost.setimgStr(imgList[1]);
+//                    Log.e(TAG, "In handleMessage: " + imgMap.get("img").toString());
+                }
+                postAdapter.notifyItemChanged(i);
+            }
+
+        };
+
+        new DataFunctions().findImage(handleMessage, imageObj);
+    }
 
     @SuppressLint("RestrictedApi")
     public static void removeNavigationShiftMode(BottomNavigationView view) {
@@ -194,5 +244,5 @@ public class FinalProjectActivity extends AppCompatActivity {
         menuView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
         menuView.buildMenuView();
     }
-    }
+}
 
