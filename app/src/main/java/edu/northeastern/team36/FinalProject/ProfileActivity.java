@@ -25,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     Intent intent0 = new Intent(ProfileActivity.this,FinalProjectActivity.class);
+
                     startActivity(intent0);
                     break;
                 case R.id.nav_my_posts:

@@ -55,18 +55,26 @@ public class AppliedPostsActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     Intent intent0 = new Intent(AppliedPostsActivity.this, FinalProjectActivity.class);
+                    intent0.putExtra("username", username);
+                    intent0.putExtra("userID", userID);
                     startActivity(intent0);
                     break;
                 case R.id.nav_my_posts:
                     Intent intent1 = new Intent(AppliedPostsActivity.this, MyPostsActivity.class);
+                    intent1.putExtra("username", username);
+                    intent1.putExtra("userID", userID);
                     startActivity(intent1);
                     break;
                 case R.id.nav_applied_posts:
                     Intent intent2 = new Intent(AppliedPostsActivity.this, AppliedPostsActivity.class);
+                    intent2.putExtra("username", username);
+                    intent2.putExtra("userID", userID);
                     startActivity(intent2);
                     break;
                 case R.id.nav_profile:
                     Intent intent3 = new Intent(AppliedPostsActivity.this, ProfileActivity.class);
+                    intent3.putExtra("username", username);
+                    intent3.putExtra("userID", userID);
                     startActivity(intent3);
                     break;
             }
