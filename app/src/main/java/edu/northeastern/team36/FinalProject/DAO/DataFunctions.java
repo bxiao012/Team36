@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -611,6 +612,77 @@ public class DataFunctions {
         new Thread(getImageRunnable).start();
 
     }
+
+    class findPostsWithImageRunnable implements Runnable {
+        private JsonObject paramObj;
+        private MyRunnable runnable;
+        private Handler handler = new Handler();
+        public void setRunnable(MyRunnable runnable) {
+            this.runnable = runnable;
+        }
+        public void setParamObj(JsonObject paramObj) {
+            this.paramObj = paramObj;
+        }
+
+        @Override
+        public void run() {
+            Looper.prepare();
+
+            FinalRetrofitInterface retrofitInterface = (FinalRetrofitInterface) FinalRetrofitBuilder.getRetrofitInstance().create(FinalRetrofitInterface.class);
+            JsonObject req = new JsonObject();
+
+
+            req.addProperty("dataSource", "Cluster0");
+            req.addProperty("database", "team36_db");
+            req.addProperty("collection", "posts");
+            JsonArray arr = new JsonArray();
+            JsonObject match = new JsonObject();
+            match.add("$match",paramObj);
+            arr.add(match);
+            JsonObject lookup = new JsonObject();
+            JsonObject lookupObj = new JsonObject();
+            lookupObj.addProperty("from","images");
+            lookupObj.addProperty("localField","image");
+            lookupObj.addProperty("foreignField","_id");
+            lookupObj.addProperty("as","imageDetail");
+            lookup.add("$lookup", lookupObj);
+            arr.add(lookup);
+            req.add("pipeline", arr);
+
+            Call<JsonObject> call = retrofitInterface.findPostsWithImage(req);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    JsonObject res = response.body();
+                    Log.d("response", String.valueOf(response.body()));
+                    try {
+                        handler.post(runnable.setParam(res));
+                    } catch (NumberFormatException e) {
+                        Log.d("catch", String.valueOf(response.body()));
+
+                    } finally {
+                        Log.d("finally", String.valueOf(response.body()));
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.d("onFailure", "failure");
+                }
+            });
+
+        }
+    }
+    public void findPostsWithImage(MyRunnable runnable, JsonObject paramObj) {
+
+        findPostsWithImageRunnable findPostsWithImageRunnable = new findPostsWithImageRunnable();
+        findPostsWithImageRunnable.setParamObj(paramObj);
+        findPostsWithImageRunnable.setRunnable(runnable);
+        new Thread(findPostsWithImageRunnable).start();
+
+    }
+
 
 
 
