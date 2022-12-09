@@ -36,6 +36,7 @@
                     android:src="@drawable/profilepic" />
 
                 <TextView
+                    android:id="@+id/usernameTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lu Wang"
@@ -44,6 +45,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/ratingTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50px"
