@@ -1,7 +1,9 @@
 package edu.northeastern.team36.FinalProject;
 
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class MyPostsActivity extends AppCompatActivity {
+    private static final String TAG = "MyPostsActivity";
     private static PostAdapter postAdapter;
     private static ArrayList<Post> postArrayList;
     private RecyclerView postRecyclerView;
@@ -41,7 +44,7 @@ public class MyPostsActivity extends AppCompatActivity {
         // fill the postRecyclerView
         postRecyclerView = findViewById(R.id.recyclerViewMyPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(postArrayList, username, userID, this);
+        postAdapter = new PostAdapter(this, postArrayList, username, userID);
         postRecyclerView.setAdapter(postAdapter);
 
         getMyPosts();
@@ -55,18 +58,26 @@ public class MyPostsActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     Intent intent0 = new Intent(MyPostsActivity.this,FinalProjectActivity.class);
+                    intent0.putExtra("username", username);
+                    intent0.putExtra("userID", userID);
                     startActivity(intent0);
                     break;
                 case R.id.nav_my_posts:
                     Intent intent1 = new Intent(MyPostsActivity.this, MyPostsActivity.class);
+                    intent1.putExtra("username", username);
+                    intent1.putExtra("userID", userID);
                     startActivity(intent1);
                     break;
                 case R.id.nav_applied_posts:
                     Intent intent2 = new Intent(MyPostsActivity.this, AppliedPostsActivity.class);
+                    intent2.putExtra("username", username);
+                    intent2.putExtra("userID", userID);
                     startActivity(intent2);
                     break;
                 case R.id.nav_profile:
                     Intent intent3 = new Intent(MyPostsActivity.this,ProfileActivity.class);
+                    intent3.putExtra("username", username);
+                    intent3.putExtra("userID", userID);
                     startActivity(intent3);
                     break;
             }
@@ -110,22 +121,62 @@ public class MyPostsActivity extends AppCompatActivity {
                     Double doubleSeat = (Double) postMap.get("seat");
                     Map ownerMap = (Map) postMap.get("owner");
                     String ownerName = (String) ownerMap.get("name");
-//                    System.out.println(ownerName);
+                    List selectedUsers = (List) postMap.get("selected");
 
-                    Post post = new Post(postMap.get("_id").toString(), ownerName,
-                            postMap.get("content").toString(), postMap.get("title").toString(), postMap.get("gameName").toString(),
-                            postMap.get("createTime").toString(), doubleSeat.intValue());
+                    Post post = new Post(postMap.get("_id").toString(), ownerMap.get("name").toString(),
+                            postMap.get("content").toString(), postMap.get("title").toString(),
+                            postMap.get("gameName").toString(), postMap.get("createTime").toString(),
+                            postMap.get("image").toString(), doubleSeat.intValue(), selectedUsers.size());
                     postArrayList.add(post);
-
-
-//                    postAdapter.notifyItemChanged(i);
                 }
-                postAdapter.notifyDataSetChanged();
+                // update imgStr in posts
+                for (int i = 0; i < postArrayList.size(); i++) {
+                    findImageByImageId(i);
+                }
 
             }
         };
 
         new DataFunctions().findPosts(handleMessage, ownerObj);
     };
+    private void findImageByImageId(int i){
+        JsonObject imageObj = new JsonObject();
+        JsonObject imageId = new JsonObject();
+        Post currPost = postArrayList.get(i);
+//        Log.e(TAG, currPost.getImgStr());
+        imageId.addProperty("$oid", currPost.getImgStr());
+        imageObj.add("_id", imageId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                if (message != null) {
+                    JsonArray imgArray = message.getAsJsonArray("documents");
+
+                    HashMap imgMap = new Gson().fromJson(imgArray.get(0).toString(), HashMap.class);
+                    String imgStr = imgMap.get("img").toString();
+                    // delete the prefix("data:image/.*;base64,")
+                    String[] imgList = imgStr.split(",");
+                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
+                    currPost.setimgStr(imgList[1]);
+//                    Log.e(TAG, "In handleMessage: " + imgMap.get("img").toString());
+                }
+                postAdapter.notifyItemChanged(i);
+            }
+        };
+
+        new DataFunctions().findImage(handleMessage, imageObj);
+    }
 
 }

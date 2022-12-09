@@ -59,6 +59,16 @@ public interface FinalRetrofitInterface {
     })
     @POST("action/find")
     Call<JsonObject> findReviews(@Body JsonObject data);
+    @Headers({"Content-Type: application/json",
+            "api-key: 0zwKEn5FdEABALtu6HaOT3HRgoAgGWzPkGwRIq18CjMvHWH9W66yusDCmQGC7O8w"
+    })
+    @POST("action/find")
+    Call<JsonObject> getImage(@Body JsonObject data);
+    @Headers({"Content-Type: application/json",
+            "api-key: 0zwKEn5FdEABALtu6HaOT3HRgoAgGWzPkGwRIq18CjMvHWH9W66yusDCmQGC7O8w"
+    })
+    @POST("action/aggregate")
+    Call<JsonObject> findPostsWithImage(@Body JsonObject data);
 
 
 

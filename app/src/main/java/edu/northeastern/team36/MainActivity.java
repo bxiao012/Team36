@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         //TestFindPosts();
         //TestCreateReview();
         //TestFindReviews();
+        //TestFindImage();
+        //TestFindPostsWithImage();
 
 
 
@@ -298,6 +300,60 @@ public class MainActivity extends AppCompatActivity {
 
         new DataFunctions().findReviews(handleMessage, toObj);
     }
+    public void TestFindImage(){
+        JsonObject imageObj = new JsonObject();
+        JsonObject imageId = new JsonObject();
+        imageId.addProperty("$oid","637ce375b5eb013ea20e7042");
+        imageObj.add("_id", imageId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the image " + message.toString());
+            }
+        };
+
+        new DataFunctions().findImage(handleMessage, imageObj);
+    }
+    public void TestFindPostsWithImage(){
+        // Find Posts by owner id - the aggregate query with the base64 image string.
+        JsonObject ownerObj = new JsonObject();
+        JsonObject ownerId = new JsonObject();
+        ownerId.addProperty("$oid","637ce04eb5eb013ea20e7010");
+        ownerObj.add("owner.id", ownerId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the posts with image" + message.toString());
+            }
+        };
+
+        new DataFunctions().findPostsWithImage(handleMessage, ownerObj);
+    }
+
 
 
 
