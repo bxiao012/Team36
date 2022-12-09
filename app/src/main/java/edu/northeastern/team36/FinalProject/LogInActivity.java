@@ -38,6 +38,8 @@ public class LogInActivity extends AppCompatActivity {
         signInBtn = findViewById(R.id.signInBtn);
         usernameEt = findViewById(R.id.usernameEditText);
         passwordEt = findViewById(R.id.passwordEditText);
+        usernameEt.setText((CharSequence) "user2");
+        passwordEt.setText((CharSequence) "123456");
 
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
