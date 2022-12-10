@@ -51,6 +51,7 @@ public class FinalProjectActivity extends AppCompatActivity {
     private PostAdapter postAdapter;
     private ArrayList<Post> postArrayList;
     private String username, userID;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,17 @@ public class FinalProjectActivity extends AppCompatActivity {
 
         getAllPosts();
 
+        // add a new post by clicking the fab
+        fab = (FloatingActionButton) findViewById(R.id.addNewPostFAB);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FinalProjectActivity.this, CreatePostActivity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
@@ -87,13 +99,6 @@ public class FinalProjectActivity extends AppCompatActivity {
                     intent1.putExtra("username", username);
                     intent1.putExtra("userID", userID);
                     startActivity(intent1);
-                    finish();
-                    break;
-                case R.id.nav_add:
-                    Intent intent2 = new Intent(FinalProjectActivity.this, CreatePostActivity.class);
-                    intent2.putExtra("username", username);
-                    intent2.putExtra("userID", userID);
-                    startActivity(intent2);
                     finish();
                     break;
                 case R.id.nav_applied_posts:
