@@ -96,12 +96,16 @@ public class PostDetailActivity extends AppCompatActivity {
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(appliedSpinner.getSelectedItem() == null || selectedUserArray.contains(appliedSpinner.getSelectedItem().toString())) {
-                    Toast.makeText(PostDetailActivity.this, "Invalid! Select A Valid User", Toast.LENGTH_SHORT).show();
+                if (!authorName.equals(username)) {
+                    Toast.makeText(PostDetailActivity.this, "You Are Not The Owner", Toast.LENGTH_SHORT).show();
                 } else {
-                    selectedUserArray.add(appliedSpinner.getSelectedItem().toString());
-                    for(int i = 0; i < selectedUserArray.size(); i++) {
-                        System.out.println(selectedUserArray.get(i));
+                    if(appliedSpinner.getSelectedItem() == null || selectedUserArray.contains(appliedSpinner.getSelectedItem().toString())) {
+                        Toast.makeText(PostDetailActivity.this, "Invalid! Select A Valid User", Toast.LENGTH_SHORT).show();
+                    } else {
+                        selectedUserArray.add(appliedSpinner.getSelectedItem().toString());
+                        for(int i = 0; i < selectedUserArray.size(); i++) {
+                            System.out.println(selectedUserArray.get(i));
+                        }
                     }
                 }
             }
@@ -110,51 +114,54 @@ public class PostDetailActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedUserArray.isEmpty() || appliedSpinner.getSelectedItem() == null || selectedUserArray.contains(appliedSpinner.getSelectedItem().toString())) {
-                    Toast.makeText(PostDetailActivity.this, "No Item selected!", Toast.LENGTH_SHORT).show();
+                if (!authorName.equals(username)) {
+                    Toast.makeText(PostDetailActivity.this, "You Are Not The Owner", Toast.LENGTH_SHORT).show();
                 } else {
-                    JsonObject postId = new JsonObject();
-                    JsonObject id = new JsonObject();
-                    // Post ID
-                    id.addProperty("$oid",postID);
-                    postId.add("_id", id);
-                    JsonArray selectedArr = new JsonArray();
-                    JsonObject selected = new JsonObject();
-                    for (int i = 0; i < selectedUserArray.size(); i++) {
-                        JsonObject selectedOne = new JsonObject();
-                        selectedOne.addProperty("name",selectedUserArray.get(i));
-                        JsonObject oid = new JsonObject();
-                        oid.addProperty("$oid", selectedMap.get(selectedUserArray.get(i)));
-                        selectedOne.add("id",oid);
-                        selectedArr.add(selectedOne);
+                    if (selectedUserArray.isEmpty() || appliedSpinner.getSelectedItem() == null || selectedUserArray.contains(appliedSpinner.getSelectedItem().toString())) {
+                        Toast.makeText(PostDetailActivity.this, "No Item selected!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        JsonObject postId = new JsonObject();
+                        JsonObject id = new JsonObject();
+                        // Post ID
+                        id.addProperty("$oid",postID);
+                        postId.add("_id", id);
+                        JsonArray selectedArr = new JsonArray();
+                        JsonObject selected = new JsonObject();
+                        for (int i = 0; i < selectedUserArray.size(); i++) {
+                            JsonObject selectedOne = new JsonObject();
+                            selectedOne.addProperty("name",selectedUserArray.get(i));
+                            JsonObject oid = new JsonObject();
+                            oid.addProperty("$oid", selectedMap.get(selectedUserArray.get(i)));
+                            selectedOne.add("id",oid);
+                            selectedArr.add(selectedOne);
+                        }
+
+                        // "selected" for inserting into selected and "applied" for inserting into applied
+                        selected.add("selected", selectedArr);
+
+                        MyRunnable handleMessage = new MyRunnable() {
+                            JsonObject message;
+                            @Override
+                            public MyRunnable setParam(JsonObject param) {
+                                message = param;
+                                return this;
+                            }
+
+                            @Override
+                            public void run() {
+                                handleMessage(message);
+                            }
+
+                            private void handleMessage(JsonObject message) {
+                                appliedUserArray.clear();
+                                selectedUserArray.clear();
+                                findPostWithImage();
+                                System.out.println("the post UPDATED " + message.toString());
+                            }
+                        };
+
+                        new DataFunctions().updatePost(handleMessage, postId, selected);
                     }
-
-                    // "selected" for inserting into selected and "applied" for inserting into applied
-                    selected.add("selected", selectedArr);
-
-                    MyRunnable handleMessage = new MyRunnable() {
-                        JsonObject message;
-                        @Override
-                        public MyRunnable setParam(JsonObject param) {
-                            message = param;
-                            return this;
-                        }
-
-                        @Override
-                        public void run() {
-                            handleMessage(message);
-                        }
-
-                        private void handleMessage(JsonObject message) {
-                            appliedUserArray.clear();
-                            selectedUserArray.clear();
-                            findPostWithImage();
-                            System.out.println("the post UPDATED " + message.toString());
-                        }
-                    };
-
-                    new DataFunctions().updatePost(handleMessage, postId, selected);
-
                 }
             }
         });
