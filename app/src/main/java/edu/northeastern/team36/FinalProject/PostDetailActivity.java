@@ -43,10 +43,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private List<String> selectedUserArray = new ArrayList<>();
     Spinner appliedSpinner;
     Spinner selectedSpinner;
-    Button selectBtn;
-    Button addBtn;
-    Button enterApplied;
-    Button enterOwner;
+    Button selectBtn, addBtn, enterApplied, enterOwner, applyBtn;
     Map<String, String> appliedMap = new HashMap<>();
     Map<String, String> selectedMap = new HashMap<>();
 
@@ -73,6 +70,7 @@ public class PostDetailActivity extends AppCompatActivity {
         enterOwner = (Button) findViewById(R.id.enter_owner);
         selectBtn = (Button) findViewById(R.id.select_button);
         addBtn = (Button) findViewById(R.id.add_button);
+        applyBtn = findViewById(R.id.applyButton);
 
         // get postDetail data from database
         findPostWithImage();
@@ -202,10 +200,23 @@ public class PostDetailActivity extends AppCompatActivity {
                     // update appliedUsers and selectedUsers
                     appliedUsers = (List<Map>) postMap.get("applied");
                     selectedUsers = (List<Map>) postMap.get("selected");
-//
 //                    Map currUserMap = appliedUsers.get(0);
 //                    String currName = currUserMap.get("name").toString();
 //                    String currID = currUserMap.get("id").toString();
+
+                    // set appliedButton visible or not
+                    for (int i = 0; i < appliedUsers.size(); i++){
+                        Map userMap = appliedUsers.get(i);
+                        if (userMap.get("id").toString().equals(userID)) {
+                            applyBtn.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                    for (int i = 0; i < selectedUsers.size(); i++){
+                        Map userMap = selectedUsers.get(i);
+                        if (userMap.get("id").toString().equals(userID)) {
+                            applyBtn.setVisibility(View.INVISIBLE);
+                        }
+                    }
 
                     // set applied users spinner
                     if (!appliedUsers.isEmpty()) {
@@ -274,11 +285,81 @@ public class PostDetailActivity extends AppCompatActivity {
                     imageView.setImageBitmap(imgBitMap);
 
                 }
-
+                setApplyBtnListener();
 //                Log.e(TAG, "the posts with image" + message.toString());
             }
         };
 
         new DataFunctions().findPostsWithImage(handleMessage, ownerObj);
+    }
+
+    private void setApplyBtnListener() {
+        applyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updatePostApply();
+            }
+        });
+    }
+
+    private void updatePostApply() {
+        /*
+        Input data:
+        {
+            "applied": [
+                            {
+                                "name": "user2"
+                                "id": {
+                                        "$oid": "637ce04eb5eb013ea20e7010"
+                                        }
+                             }
+                       ]
+        }
+
+         */
+        JsonObject postId = new JsonObject();
+        JsonObject id = new JsonObject();
+        // Post ID
+        id.addProperty("$oid",postID);
+        postId.add("_id", id);
+        // update appliedOne
+        JsonArray appliedArr = new JsonArray();
+        appliedUserArray.add(username);
+        appliedMap.put(username, userID);
+        for (int i = 0; i < appliedUserArray.size(); i++) {
+            JsonObject appliedOne = new JsonObject();
+            String currUsername = appliedUserArray.get(i);
+            appliedOne.addProperty("name", currUsername);
+            JsonObject oid = new JsonObject();
+            oid.addProperty("$oid", appliedMap.get(currUsername));
+            appliedOne.add("id",oid);
+            appliedArr.add(appliedOne);
+        }
+        // update applied
+        JsonObject applied = new JsonObject();
+        applied.add("applied", appliedArr);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the post UPDATED " + message.toString());
+                appliedUserArray.clear();
+                selectedUserArray.clear();
+                findPostWithImage();
+            }
+        };
+
+        new DataFunctions().updatePost(handleMessage, postId, applied);
     }
 }

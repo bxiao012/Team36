@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         //TestCreatePost();
         //TestCreatePost();
         //TestUpdatePost();
+        //TestUpdatePostClosed();
         //TestFindUser();
         //TestFindPosts();
         //TestCreateReview();
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         //TestFindImage();
         //TestFindPostsWithImage();
         //TestGetAvgRate();
-//        TestUpdatePostClosed();
 
 
 
