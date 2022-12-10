@@ -66,8 +66,8 @@ public class CreateReviewActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(userSpinner.getSelectedItem() == null) {
-                    Toast.makeText(CreateReviewActivity.this, "No User selected", Toast.LENGTH_SHORT).show();
+                if(userSpinner.getSelectedItem() == null || content.getText().toString().equals("") || rate.getText().toString().equals("")) {
+                    Toast.makeText(CreateReviewActivity.this, "No User selected, No Rate or No Content", Toast.LENGTH_SHORT).show();
                 } else {
                     // if the user is reviewed, can not be reviewed again
                     if (reviewMap.get(userSpinner.getSelectedItem().toString())) {
