@@ -2,6 +2,7 @@ package edu.northeastern.team36.FinalProject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class AppliedPostsActivity extends AppCompatActivity {
+    private static final String TAG = "AppliedPostsActivity";
     private static PostAdapter postAdapter;
     private static ArrayList<Post> postArrayList;
     private RecyclerView postRecyclerView;
@@ -42,7 +44,7 @@ public class AppliedPostsActivity extends AppCompatActivity {
         // fill the postRecyclerView
         postRecyclerView = findViewById(R.id.recyclerViewAppliedPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(postArrayList, username, userID, this);
+        postAdapter = new PostAdapter(this, postArrayList, username, userID);
         postRecyclerView.setAdapter(postAdapter);
 
         getAppliedPosts();
@@ -110,11 +112,9 @@ public class AppliedPostsActivity extends AppCompatActivity {
                     JsonElement postJsonObject = postArray.get(i);
 //                    System.out.println(postJsonObject);
                     HashMap postMap = new Gson().fromJson(postJsonObject.toString(), HashMap.class);
-
                     Double doubleSeat = (Double) postMap.get("seat");
                     Map ownerMap = (Map) postMap.get("owner");
-                    String ownerName = (String) ownerMap.get("name");
-//                    System.out.println(ownerName);
+                    List selectedUsers = (List) postMap.get("selected");
 
                     // check if applied or not
                     List<Map> appliedUsers = (List<Map>) postMap.get("applied");
@@ -123,22 +123,63 @@ public class AppliedPostsActivity extends AppCompatActivity {
 //                        System.out.println(appliedUsers.get(j).get("id").toString());
                         String appliedUserID = (String) appliedUsers.get(j).get("id");
                         if (appliedUserID != null && appliedUserID.equals(userID)) {
-                            Post post = new Post(postMap.get("_id").toString(), ownerName,
-                                    postMap.get("content").toString(), postMap.get("title").toString(), postMap.get("gameName").toString(),
-                                    postMap.get("createTime").toString(), doubleSeat.intValue());
+                            Post post = new Post(postMap.get("_id").toString(), ownerMap.get("name").toString(),
+                                    postMap.get("content").toString(), postMap.get("title").toString(),
+                                    postMap.get("gameName").toString(), postMap.get("createTime").toString(),
+                                    postMap.get("image").toString(), doubleSeat.intValue(), selectedUsers.size());
                             postArrayList.add(post);
                         }
                     }
-
-
-//                    postAdapter.notifyItemChanged(i);
                 }
-                postAdapter.notifyDataSetChanged();
+                // update imgStr in posts
+                for (int i = 0; i < postArrayList.size(); i++) {
+                    findImageByImageId(i);
+                }
             }
-
         };
 
         // get all posts by using the handleMessage
         new DataFunctions().getAllPosts(handleMessageAllPosts);
     };
+
+    private void findImageByImageId(int i){
+        JsonObject imageObj = new JsonObject();
+        JsonObject imageId = new JsonObject();
+        Post currPost = postArrayList.get(i);
+//        Log.e(TAG, currPost.getImgStr());
+        imageId.addProperty("$oid", currPost.getImgStr());
+        imageObj.add("_id", imageId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                if (message != null) {
+
+                    JsonArray imgArray = message.getAsJsonArray("documents");
+
+                    HashMap imgMap = new Gson().fromJson(imgArray.get(0).toString(), HashMap.class);
+                    String imgStr = imgMap.get("img").toString();
+                    // delete the prefix("data:image/.*;base64,")
+                    String[] imgList = imgStr.split(",");
+                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
+                    currPost.setimgStr(imgList[1]);
+//                    Log.e(TAG, "In handleMessage: " + imgMap.get("img").toString());
+                }
+                postAdapter.notifyItemChanged(i);
+            }
+        };
+
+        new DataFunctions().findImage(handleMessage, imageObj);
+    }
 }

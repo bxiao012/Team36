@@ -1,6 +1,9 @@
 package edu.northeastern.team36.FinalProject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +12,27 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.ArrayList;
+
 import edu.northeastern.team36.R;
 
 public class ProfileActivity extends AppCompatActivity {
+    private ArrayList<Review> reviewsList;
+    private RecyclerView recyclerView;
     private String username, userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        recyclerView = findViewById(R.id.recyclerViewReviews);
         username = getIntent().getStringExtra("username");
         userID = getIntent().getStringExtra("userID");
+        reviewsList = new ArrayList<>();
+        setReviewInfo();
+        setAdapter();
+
+
 
         TextView userName = (TextView) findViewById(R.id.usernameTv);
         TextView rating = (TextView) findViewById(R.id.ratingTv);
@@ -59,6 +72,26 @@ public class ProfileActivity extends AppCompatActivity {
 
             return true;
         });
+
+
+
+        }
+
+    private void setReviewInfo(){
+        reviewsList.add(new Review(username, "very good team player"));
+        reviewsList.add(new Review(username, "good teammate"));
+        reviewsList.add(new Review(username, "smooth collaboration"));
+
+
+    }
+
+    private void setAdapter(){
+        ReviewAdapter adapter = new ReviewAdapter(reviewsList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
 
     }
 

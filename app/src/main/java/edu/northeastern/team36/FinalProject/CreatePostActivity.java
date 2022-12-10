@@ -24,11 +24,13 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -46,6 +48,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -54,9 +57,7 @@ import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class CreatePostActivity extends AppCompatActivity {
-    private static final int REQUEST_IMAGE_CAPTURE = 101;
     private static final int LOCATION_REQUEST_CODE = 10001;
-    private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     EditText titleInput;
     EditText gameInput;
@@ -70,6 +71,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private String location;
     private String username;
     private String userID;
+    private String photo;
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     ImageView imageV;
@@ -96,7 +98,9 @@ public class CreatePostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
         username = getIntent().getStringExtra("username");
-        userID = getIntent().getStringExtra("username");
+        userID = getIntent().getStringExtra("userID");
+        // default photo
+        photo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAACoCAYAAAC2e+";
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(CreatePostActivity.this);
         // location request
@@ -108,6 +112,21 @@ public class CreatePostActivity extends AppCompatActivity {
 
         // get location
         locationBtn = (Button) findViewById(R.id.locationButton);
+        locationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onStart: ");
+                if (ContextCompat.checkSelfPermission(CreatePostActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(CreatePostActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            getLastLocation();
+                    checkSettingsAndStartLocationUpdates();
+                    Toast.makeText(CreatePostActivity.this, "Added Location!", Toast.LENGTH_SHORT).show();
+                } else { // ask for the permission
+                    askLocationPermission();
+                    Toast.makeText(CreatePostActivity.this, "Click Location Button Again!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //get image
         imageV = (ImageView) findViewById(R.id.imageView);
@@ -117,11 +136,13 @@ public class CreatePostActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         // Add same code that you want to add in onActivityResult method
-                        if(result.getResultCode() == CAMERA_REQUEST) {
+                        if(result.getResultCode() == RESULT_OK && result.getData() !=null) {
                             Intent intent = result.getData();
-                            Bundle im = intent.getExtras();
-                            Bitmap imBitmap = (Bitmap) im.get("camera result");
-                            imageV.setImageBitmap(imBitmap);
+                            Bundle picture = intent.getExtras();
+                            Bitmap pictureBitmap = (Bitmap) picture.get("data");
+                            imageV.setImageBitmap(pictureBitmap);
+                            // encode the bitmap
+                            photo = getEncodedString(pictureBitmap);
                         }
                     }
                 });
@@ -136,13 +157,14 @@ public class CreatePostActivity extends AppCompatActivity {
                 {
                     Log.d(TAG, "onClick: ask for permission");
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                    Toast.makeText(CreatePostActivity.this, "Click Image Button Again!", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     Log.d(TAG, "onClick: take picture");
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityIntent.launch(cameraIntent);
-
+                    Toast.makeText(CreatePostActivity.this, "Take a Picture!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -177,14 +199,14 @@ public class CreatePostActivity extends AppCompatActivity {
                 post.addProperty("createTime", formatDate);
                 JsonObject owner = new JsonObject();
                 JsonObject ownerID = new JsonObject();
-                ownerID.addProperty("$oid", "637ce04eb5eb013ea20e7010");
-                owner.addProperty("name","user10");
+                ownerID.addProperty("$oid", userID);
+                owner.addProperty("name",username);
                 owner.add("id", ownerID);
                 post.add("owner", owner);
                 post.add("applied", new JsonArray());
                 post.add("selected", new JsonArray());
                 JsonObject imageObj = new JsonObject();
-                imageObj.addProperty("img","data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAACoCAYAAAC2e+");
+                imageObj.addProperty("img","data:image/png;base64," + photo);
                 imageObj.addProperty("uploadTime", formatDate);
                 MyRunnable handleMessage = new MyRunnable() {
                     JsonObject message;
@@ -211,18 +233,18 @@ public class CreatePostActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        Log.d(TAG, "onStart: ");
-        super.onStart();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            getLastLocation();
-            checkSettingsAndStartLocationUpdates();
-        } else { // ask for the permission
-            askLocationPermission();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        Log.d(TAG, "onStart: ");
+//        super.onStart();
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+////            getLastLocation();
+//            checkSettingsAndStartLocationUpdates();
+//        } else { // ask for the permission
+//            askLocationPermission();
+//        }
+//    }
 
     private void checkSettingsAndStartLocationUpdates() {
         LocationSettingsRequest request = new LocationSettingsRequest.Builder()
@@ -266,7 +288,6 @@ public class CreatePostActivity extends AppCompatActivity {
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-
     }
 
     private void askLocationPermission() {
@@ -283,13 +304,14 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-    // take picture
-    public void takePicture(View view) {
-        Intent image = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    // encode bitmap into string-base_64
+    private String getEncodedString(Bitmap bitmap){
 
-        if(image.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(image, REQUEST_IMAGE_CAPTURE);
-        }
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100, os);
+        byte[] imageArr = os.toByteArray();
+
+        return Base64.encodeToString(imageArr, Base64.DEFAULT);
     }
-
 }

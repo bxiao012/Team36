@@ -1,16 +1,29 @@
 package edu.northeastern.team36.FinalProject;
 
-import androidx.appcompat.app.AppCompatActivity;
+public class Review {
+    private String userName;
+    private String reviewDetail;
 
-import android.os.Bundle;
+    public Review(String userName, String reviewDetail) {
+        this.userName = userName;
+        this.reviewDetail = reviewDetail;
 
-import edu.northeastern.team36.R;
 
-public class Review extends AppCompatActivity {
+    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_review);
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getReviewDetail() {
+        return reviewDetail;
+    }
+
+    public void setReviewDetail(String reviewDetail) {
+        this.reviewDetail = reviewDetail;
     }
 }
