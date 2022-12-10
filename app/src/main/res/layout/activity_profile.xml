@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50px"
                     android:layout_marginBottom="50px"
-                    android:text="Average Rating: 4/5"
+                    android:text="Average Rating: "
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="normal" />
@@ -113,6 +113,14 @@
             android:orientation="vertical"
             android:paddingTop="50px"
             android:layout_marginLeft="80px">
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/bottom_navigation"
+                android:orientation="vertical" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewReviews"
                 android:layout_width="match_parent"
@@ -122,13 +130,6 @@
     </LinearLayout>
     </LinearLayout>
 
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
-        android:orientation="vertical"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
