@@ -12,6 +12,11 @@
         android:title="My Posts"/>
 
     <item
+        android:id = "@+id/nav_add"
+        android:icon="@drawable/ic_add"
+        android:title="Create Post"/>
+
+    <item
         android:id="@+id/nav_applied_posts"
         android:icon="@drawable/ic_applied_posts"
         android:title="Applied Posts"/>

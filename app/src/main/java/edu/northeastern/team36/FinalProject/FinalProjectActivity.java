@@ -50,10 +50,6 @@ public class FinalProjectActivity extends AppCompatActivity {
     private PostAdapter postAdapter;
     private  ArrayList<Post> postArrayList;
     private String username, userID;
-    private String title, game, authorName, time, description, imgStr;
-    private int seats;
-
-    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +59,6 @@ public class FinalProjectActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
         userID = getIntent().getStringExtra("userID");
         postArrayList = new ArrayList<>();
-
-        // add a new post by clicking the fab
-        fab = (FloatingActionButton) findViewById(R.id.addNewPostFAB);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FinalProjectActivity.this, CreatePostActivity.class);
-                intent.putExtra("username", username);
-                intent.putExtra("userID", userID);
-                startActivity(intent);
-            }
-        });
-
 
         // fill the postRecyclerView
         postRecyclerView = findViewById(R.id.recyclerViewPosts);
@@ -105,18 +88,25 @@ public class FinalProjectActivity extends AppCompatActivity {
                     startActivity(intent1);
                     finish();
                     break;
-                case R.id.nav_applied_posts:
-                    Intent intent2 = new Intent(FinalProjectActivity.this,AppliedPostsActivity.class);
+                case R.id.nav_add:
+                    Intent intent2 = new Intent(FinalProjectActivity.this, CreatePostActivity.class);
                     intent2.putExtra("username", username);
                     intent2.putExtra("userID", userID);
                     startActivity(intent2);
                     finish();
                     break;
-                case R.id.nav_profile:
-                    Intent intent3 = new Intent(FinalProjectActivity.this,ProfileActivity.class);
+                case R.id.nav_applied_posts:
+                    Intent intent3 = new Intent(FinalProjectActivity.this,AppliedPostsActivity.class);
                     intent3.putExtra("username", username);
                     intent3.putExtra("userID", userID);
                     startActivity(intent3);
+                    finish();
+                    break;
+                case R.id.nav_profile:
+                    Intent intent4 = new Intent(FinalProjectActivity.this,ProfileActivity.class);
+                    intent4.putExtra("username", username);
+                    intent4.putExtra("userID", userID);
+                    startActivity(intent4);
                     finish();
                     break;
             }
