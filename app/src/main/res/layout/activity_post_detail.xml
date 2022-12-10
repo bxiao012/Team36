@@ -128,7 +128,7 @@
                 android:layout_width="53dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Enter Applied" />
+                android:text="Check Profile" />
         </LinearLayout>
 
         <LinearLayout
@@ -155,7 +155,7 @@
                 android:layout_width="53dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enter Selected" />
+                android:text="Check Profile" />
         </LinearLayout>
     </LinearLayout>
 
@@ -163,7 +163,7 @@
         android:id="@+id/enter_owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="owner profile"
+        android:text="check Profile"
         app:layout_constraintBottom_toTopOf="@+id/seatTv2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.621"
