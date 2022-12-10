@@ -1,23 +1,16 @@
 package edu.northeastern.team36.FinalProject;
 
 public class Review {
-    private String userName;
+    private String userID;
     private String reviewDetail;
 
-    public Review(String userName, String reviewDetail) {
-        this.userName = userName;
+    public Review(String userID, String reviewDetail) {
+        this.userID = userID;
         this.reviewDetail = reviewDetail;
 
 
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public String getReviewDetail() {
         return reviewDetail;
@@ -25,5 +18,13 @@ public class Review {
 
     public void setReviewDetail(String reviewDetail) {
         this.reviewDetail = reviewDetail;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

@@ -7,19 +7,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import edu.northeastern.team36.FinalProject.DAO.DataFunctions;
+import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class ProfileActivity extends AppCompatActivity {
     private ArrayList<Review> reviewsList;
     private RecyclerView recyclerView;
     private String username, userID;
+    private static ReviewAdapter reviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +40,13 @@ public class ProfileActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
         userID = getIntent().getStringExtra("userID");
         reviewsList = new ArrayList<>();
-        setReviewInfo();
+        getReviews();
         setAdapter();
 
 
 
         TextView userName = (TextView) findViewById(R.id.usernameTv);
-        TextView rating = (TextView) findViewById(R.id.ratingTv);
+        //TextView ratings = (TextView) findViewById(R.id.ratingTv);
 
         userName.setText(username);
 
@@ -77,23 +88,61 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
 
-    private void setReviewInfo(){
-        reviewsList.add(new Review(username, "very good team player"));
-        reviewsList.add(new Review(username, "good teammate"));
-        reviewsList.add(new Review(username, "smooth collaboration"));
+//    private void setReviewInfo(){
+//        reviewsList.add(new Review(userID, "very good team player"));
+//        reviewsList.add(new Review(userID, "good teammate"));
+//        reviewsList.add(new Review(userID, "smooth collaboration"));
 
 
-    }
+//    }
 
     private void setAdapter(){
-        ReviewAdapter adapter = new ReviewAdapter(reviewsList);
+        ReviewAdapter reviewAdapter = new ReviewAdapter(reviewsList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-
+        recyclerView.setAdapter(reviewAdapter);
 
     }
+
+    private void getReviews() {
+        JsonObject toObj = new JsonObject();
+        JsonObject toId = new JsonObject();
+        toId.addProperty("$oid",userID);
+        toObj.add("to", toId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the reviews " + message.toString());
+                JsonArray reviewArray = message.getAsJsonArray("documents");
+
+                for (int i = 0; i < reviewArray.size(); i++) {
+                    JsonElement reviewJsonObject = reviewArray.get(i);
+                    HashMap reviewMap = new Gson().fromJson(reviewJsonObject.toString(), HashMap.class);
+                    Review review = new Review(reviewMap.get("_id").toString(), reviewMap.get("content").toString());
+                    reviewsList.add(review);
+                    reviewAdapter.notifyItemChanged(i);
+                }
+
+                System.out.println("Reviews" + reviewsList);
+
+            }
+        };
+
+        new DataFunctions().getReviewByUser(handleMessage, toObj);
+    };
 
 
 }
