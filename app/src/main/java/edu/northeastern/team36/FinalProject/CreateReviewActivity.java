@@ -85,7 +85,7 @@ public class CreateReviewActivity extends AppCompatActivity {
                         reviewObj.add("to", toId);
                         reviewObj.add("postId", postId);
                         reviewObj.addProperty("content", content.getText().toString());
-                        reviewObj.addProperty("rate", rate.getText().toString());
+                        reviewObj.addProperty("rate", Integer.parseInt(rate.getText().toString()));
                         String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                         reviewObj.addProperty("createTime", formatDate);
 
