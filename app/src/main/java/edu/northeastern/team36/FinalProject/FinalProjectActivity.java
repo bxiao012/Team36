@@ -203,7 +203,7 @@ public class FinalProjectActivity extends AppCompatActivity {
                     // delete the prefix("data:image/.*;base64,")
                     String[] imgList = imgStr.split(",");
 //                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
-                    currPost.setimgStr(imgList[1]);
+                    currPost.setimgStr(imgList[imgList.length - 1]);
 //                    Log.e(TAG, "In handleMessage: " + imgMap.get("img").toString());
                 }
                 postAdapter.notifyItemChanged(i);

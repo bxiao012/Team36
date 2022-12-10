@@ -64,26 +64,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String title = currPost.getTitle();
-                String postAuthor = currPost.getAuthorName();
-                String description = currPost.getDescription();
-                int seat = currPost.getSeats();
-                String game = currPost.getGame();
                 Intent intent = new Intent(view.getContext(), PostDetailActivity.class);
                 intent.putExtra("username", username);
                 intent.putExtra("userID", userID);
-                intent.putExtra("EXTRA_TITLE", title);
-                intent.putExtra("AUTHOR_NAME", postAuthor);
-                intent.putExtra("DESCRIPTION", description);
-                intent.putExtra("SEAT", seat);
-                intent.putExtra("GAME", game);
-
-                // pass image
-                Bitmap bmp = BitmapFactory.decodeResource(PostAdapter.this.context.getResources(), R.drawable.apple);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-                intent.putExtra("IMAGE", byteArray);
+                intent.putExtra("postID", currPost.getPostID());
                 context.startActivity(intent);
             }
         });
