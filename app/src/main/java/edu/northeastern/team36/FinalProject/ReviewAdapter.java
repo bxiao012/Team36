@@ -21,10 +21,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
 
     public class MyViewHolder extends  RecyclerView.ViewHolder{
         private TextView reviewTxt;
+        private TextView ratingTxt;
 
         public MyViewHolder(final View view){
             super(view);
             reviewTxt = view.findViewById(R.id.reviewDetailTv);
+            ratingTxt = view.findViewById(R.id.reviewRatingTv);
         }
     }
 
@@ -40,7 +42,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull ReviewAdapter.MyViewHolder holder, int position) {
         String review = reviewsList.get(position).getReviewDetail();
+        double rating = reviewsList.get(position).getRating();
+        String stringRating = Double.toString(rating);
         holder.reviewTxt.setText(review);
+        holder.ratingTxt.setText(stringRating);
 
     }
 

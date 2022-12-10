@@ -131,7 +131,8 @@ public class ProfileActivity extends AppCompatActivity {
                 for (int i = 0; i < reviewArray.size(); i++) {
                     JsonElement reviewJsonObject = reviewArray.get(i);
                     HashMap reviewMap = new Gson().fromJson(reviewJsonObject.toString(), HashMap.class);
-                    Review review = new Review(reviewMap.get("_id").toString(), reviewMap.get("content").toString());
+                    Double doubleRating = (Double) reviewMap.get("rate");
+                    Review review = new Review(reviewMap.get("_id").toString(), reviewMap.get("content").toString(),doubleRating.intValue());
                     reviewsList.add(review);
                     reviewAdapter.notifyItemChanged(i);
                 }
