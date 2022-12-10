@@ -331,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
         JsonObject ownerObj = new JsonObject();
         JsonObject ownerId = new JsonObject();
         ownerId.addProperty("$oid","637ce04eb5eb013ea20e7010");
+        // Use "_id" as the replacement of "owner.id" -> FindPostByPostId
         ownerObj.add("owner.id", ownerId);
 
         MyRunnable handleMessage = new MyRunnable() {
