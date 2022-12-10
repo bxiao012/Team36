@@ -3,6 +3,8 @@ package edu.northeastern.team36.FinalProject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,10 +29,12 @@ import edu.northeastern.team36.R;
 
 public class AppliedPostsActivity extends AppCompatActivity {
     private static final String TAG = "AppliedPostsActivity";
+    private static final String POST_TYPE = "AppliedPosts";
     private static PostAdapter postAdapter;
     private static ArrayList<Post> postArrayList;
     private RecyclerView postRecyclerView;
     private String username, userID;
+    private ImageButton reviewImgBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,7 @@ public class AppliedPostsActivity extends AppCompatActivity {
         // fill the postRecyclerView
         postRecyclerView = findViewById(R.id.recyclerViewAppliedPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(this, postArrayList, username, userID);
+        postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
         postRecyclerView.setAdapter(postAdapter);
 
         getAppliedPosts();
@@ -130,7 +134,8 @@ public class AppliedPostsActivity extends AppCompatActivity {
                             Post post = new Post(postMap.get("_id").toString(), ownerMap.get("name").toString(),
                                     postMap.get("content").toString(), postMap.get("title").toString(),
                                     postMap.get("gameName").toString(), postMap.get("createTime").toString(),
-                                    postMap.get("image").toString(), doubleSeat.intValue(), selectedUsers.size());
+                                    postMap.get("image").toString(), postMap.get("status").toString(),
+                                    doubleSeat.intValue(), selectedUsers.size());
                             postArrayList.add(post);
                         }
                     }
@@ -177,7 +182,7 @@ public class AppliedPostsActivity extends AppCompatActivity {
                     // delete the prefix("data:image/.*;base64,")
                     String[] imgList = imgStr.split(",");
                     Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
-                    currPost.setimgStr(imgList[1]);
+                    currPost.setImgStr(imgList[1]);
 //                    Log.e(TAG, "In handleMessage: " + imgMap.get("img").toString());
                 }
                 postAdapter.notifyItemChanged(i);

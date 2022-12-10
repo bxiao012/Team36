@@ -4,11 +4,11 @@ import android.content.Intent;
 
 public class Post {
 
-    private String authorName, postID, description, title, time, game, imgStr;
+    private String authorName, postID, description, title, time, game, imgStr, status;
     private int seats, selected;
 
     public Post(String postID, String authorName, String description, String title, String game,
-                String time, String imgStr, Integer seats, Integer selected) {
+                String time, String imgStr, String status, Integer seats, Integer selected) {
         this.postID = postID;
         this.authorName = authorName;
         this.title = title;
@@ -18,7 +18,7 @@ public class Post {
         this.seats = seats;
         this.imgStr = imgStr;
         this.selected = selected;
-
+        this.status = status;
     }
 
     public String getAuthorName() {
@@ -81,7 +81,7 @@ public class Post {
         return imgStr;
     }
 
-    public void setimgStr(String imgStr) {
+    public void setImgStr(String imgStr) {
         this.imgStr = imgStr;
     }
 
@@ -91,5 +91,13 @@ public class Post {
 
     public void setSelected(int selected) {
         this.selected = selected;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -45,10 +45,11 @@ import edu.northeastern.team36.R;
 
 public class FinalProjectActivity extends AppCompatActivity {
     private static final String TAG = "AppCompatActivity";
+    private static final String POST_TYPE = "HomePagePosts";
     private RecyclerView postsRv;
     private RecyclerView postRecyclerView;
     private PostAdapter postAdapter;
-    private  ArrayList<Post> postArrayList;
+    private ArrayList<Post> postArrayList;
     private String username, userID;
 
     @Override
@@ -63,7 +64,7 @@ public class FinalProjectActivity extends AppCompatActivity {
         // fill the postRecyclerView
         postRecyclerView = findViewById(R.id.recyclerViewPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(this, postArrayList, username, userID);
+        postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
         postRecyclerView.setAdapter(postAdapter);
 
         getAllPosts();
@@ -152,7 +153,8 @@ public class FinalProjectActivity extends AppCompatActivity {
                     Post post = new Post(postMap.get("_id").toString(), ownerMap.get("name").toString(),
                             postMap.get("content").toString(), postMap.get("title").toString(),
                             postMap.get("gameName").toString(), postMap.get("createTime").toString(),
-                            postMap.get("image").toString(), doubleSeat.intValue(), selectedUsers.size());
+                            postMap.get("image").toString(), postMap.get("status").toString(),
+                            doubleSeat.intValue(), selectedUsers.size());
                     postArrayList.add(post);
                 }
 
@@ -197,7 +199,7 @@ public class FinalProjectActivity extends AppCompatActivity {
                     // delete the prefix("data:image/.*;base64,")
                     String[] imgList = imgStr.split(",");
 //                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
-                    currPost.setimgStr(imgList[imgList.length - 1]);
+                    currPost.setImgStr(imgList[imgList.length - 1]);
 //                    Log.e(TAG, "In handleMessage: " + imgMap.get("img").toString());
                 }
                 postAdapter.notifyItemChanged(i);

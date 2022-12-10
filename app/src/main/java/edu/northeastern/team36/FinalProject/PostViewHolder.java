@@ -13,9 +13,9 @@ import edu.northeastern.team36.R;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
 
-    public ImageButton applyBtn;
     public TextView titleTv, postTimeTv, postAuthorTv, descriptionTv, gameTv, seatTv;
     public ImageView imageIv;
+    public ImageButton endImgBtn, reviewImgBtn;
 
     public PostViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -28,5 +28,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         this.seatTv = itemView.findViewById(R.id.seatTv);
         this.descriptionTv = itemView.findViewById(R.id.descriptionTv);
         this.imageIv = itemView.findViewById(R.id.imageIv);
+        this.endImgBtn = itemView.findViewById(R.id.endImgBtn);
+        this.reviewImgBtn = itemView.findViewById(R.id.reviewImgBtn);
     }
 }

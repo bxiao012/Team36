@@ -22,13 +22,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private static final String TAG = "PostAdapter";
     private final Context context;
     private final ArrayList<Post> postArrayList;
-    private final String username, userID;
+    private final String username, userID, postsType;
 
-    public PostAdapter(Context context, ArrayList<Post> postArrayList, String username, String userID) {
+    public PostAdapter(Context context, ArrayList<Post> postArrayList, String username, String userID, String postsType) {
         this.context = context;
         this.username = username;
         this.userID = userID;
         this.postArrayList = postArrayList;
+        this.postsType = postsType;
     }
 
     @NonNull
@@ -48,6 +49,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String seatsRemaining = "Seats: " + currPost.getSelected().toString() + " / "
                 + currPost.getSeats().toString();
         holder.seatTv.setText(seatsRemaining);
+
+        if (this.postsType.equals("AppliedPosts")) {
+            holder.reviewImgBtn.setVisibility(View.VISIBLE);
+        } else if (this.postsType.equals("MyPosts") && currPost.getStatus() == "In progress") {
+            holder.endImgBtn.setVisibility(View.VISIBLE);
+        }
 
         // set bitmap to imageView
         try {
