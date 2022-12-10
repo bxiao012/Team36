@@ -96,24 +96,28 @@ public class FinalProjectActivity extends AppCompatActivity {
                     intent0.putExtra("username", username);
                     intent0.putExtra("userID", userID);
                     startActivity(intent0);
+                    finish();
                     break;
                 case R.id.nav_my_posts:
                     Intent intent1 = new Intent(FinalProjectActivity.this, MyPostsActivity.class);
                     intent1.putExtra("username", username);
                     intent1.putExtra("userID", userID);
                     startActivity(intent1);
+                    finish();
                     break;
                 case R.id.nav_applied_posts:
                     Intent intent2 = new Intent(FinalProjectActivity.this,AppliedPostsActivity.class);
                     intent2.putExtra("username", username);
                     intent2.putExtra("userID", userID);
                     startActivity(intent2);
+                    finish();
                     break;
                 case R.id.nav_profile:
                     Intent intent3 = new Intent(FinalProjectActivity.this,ProfileActivity.class);
                     intent3.putExtra("username", username);
                     intent3.putExtra("userID", userID);
                     startActivity(intent3);
+                    finish();
                     break;
             }
 
