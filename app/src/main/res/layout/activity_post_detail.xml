@@ -111,7 +111,7 @@
 
             <TextView
                 android:id="@+id/appliedUserTv"
-                android:layout_width="8dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -119,16 +119,23 @@
 
             <Spinner
                 android:id="@+id/applied_spinner"
-                android:layout_width="0dp"
+                android:layout_width="77dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <Button
                 android:id="@+id/applied_button"
-                android:layout_width="53dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Check Profile" />
+                android:text="Profile" />
+
+            <Button
+                android:id="@+id/select_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="select" />
         </LinearLayout>
 
         <LinearLayout
@@ -138,7 +145,7 @@
 
             <TextView
                 android:id="@+id/selectedUserTv"
-                android:layout_width="8dp"
+                android:layout_width="133dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -146,16 +153,17 @@
 
             <Spinner
                 android:id="@+id/selected_spinner"
-                android:layout_width="0dp"
+                android:layout_width="211dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/selected_button"
-                android:layout_width="53dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/add_button"
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Check Profile" />
+                android:text="add" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -163,7 +171,7 @@
         android:id="@+id/enter_owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="check Profile"
+        android:text="Profile"
         app:layout_constraintBottom_toTopOf="@+id/seatTv2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.621"
