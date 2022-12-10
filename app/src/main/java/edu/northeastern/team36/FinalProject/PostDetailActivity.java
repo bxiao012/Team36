@@ -273,7 +273,6 @@ public class PostDetailActivity extends AppCompatActivity {
                     Bitmap imgBitMap = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
                     imageView.setImageBitmap(imgBitMap);
 
-                    // TODO: write the logics about appliedUsers and selectedUsers
                 }
 
 //                Log.e(TAG, "the posts with image" + message.toString());

@@ -18,6 +18,7 @@ import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.FinalProject.FinalProjectActivity;
 import edu.northeastern.team36.FinalProject.LogInActivity;
 import edu.northeastern.team36.FinalProject.DAO.DataFunctions;
+import edu.northeastern.team36.FinalProject.Post;
 
 public class MainActivity extends AppCompatActivity {
     TextView title;
@@ -58,10 +59,11 @@ public class MainActivity extends AppCompatActivity {
         //TestFindUser();
         //TestFindPosts();
         //TestCreateReview();
-        //TestFindReviews();
+//        TestFindReviews();
         //TestFindImage();
         //TestFindPostsWithImage();
         //TestGetAvgRate();
+//        TestUpdatePostClosed();
 
 
 
@@ -278,8 +280,10 @@ public class MainActivity extends AppCompatActivity {
         // Find reviews "to" somebody
         JsonObject toObj = new JsonObject();
         JsonObject toId = new JsonObject();
-        toId.addProperty("$oid","637ce04eb5eb013ea20e7011");
-        toObj.add("to", toId);
+        toId.addProperty("$oid","637ce04eb5eb013ea20e7010");
+//        toObj.add("to", toId);
+        toObj.add("from", toId);
+
 
         MyRunnable handleMessage = new MyRunnable() {
             JsonObject message;
@@ -380,6 +384,62 @@ public class MainActivity extends AppCompatActivity {
         };
 
         new DataFunctions().getAvgRate(handleMessage, toObj);
+    }
+
+    private void TestUpdatePostClosed(){
+        /*
+        Input data:
+        {
+            "applied": [
+                            {
+                                "name": "user2"
+                                "id": {
+                                        "$oid": "637ce04eb5eb013ea20e7010"
+                                        }
+                             }
+                       ]
+        }
+
+         */
+        JsonObject postId = new JsonObject();
+        JsonObject id = new JsonObject();
+        // Post ID
+        id.addProperty("$oid", "637ce23db5eb013ea20e702b");
+        postId.add("_id", id);
+
+//        JsonObject applied = new JsonObject();
+//        JsonObject appliedOne = new JsonObject();
+//        appliedOne.addProperty("name","user2");
+//        JsonObject oid = new JsonObject();
+//        oid.addProperty("$oid", "637ce04eb5eb013ea20e7011");
+//        appliedOne.add("id",oid);
+//        JsonArray appliedArr = new JsonArray();
+//        appliedArr.add(appliedOne);
+//
+        JsonObject status = new JsonObject();
+        status.addProperty("status", "Closed");
+        // "selected" for inserting into selected and "applied" for inserting into applied
+//        applied.add("selected", appliedArr);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the post UPDATED " + message.toString());
+            }
+        };
+
+        new DataFunctions().updatePost(handleMessage, postId, status);
     }
 
 

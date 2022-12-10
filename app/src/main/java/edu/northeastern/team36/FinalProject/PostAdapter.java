@@ -13,9 +13,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+import edu.northeastern.team36.FinalProject.DAO.DataFunctions;
+import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
@@ -52,8 +57,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
         if (this.postsType.equals("AppliedPosts")) {
             holder.reviewImgBtn.setVisibility(View.VISIBLE);
-        } else if (this.postsType.equals("MyPosts") && currPost.getStatus() == "In progress") {
+        } else if (this.postsType.equals("MyPosts") && currPost.getStatus().equals("In progress")
+        && currPost.getSeats().equals(currPost.getSelected())) {
+//            Log.e(TAG, currPost.getPostID() + " status: " + currPost.getStatus() + " seats: "
+//            + currPost.getSeats() + " selected: " +currPost.getSelected());
             holder.endImgBtn.setVisibility(View.VISIBLE);
+            holder.endImgBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updatePostClosed(currPost, holder);
+                }
+            });
         }
 
         // set bitmap to imageView
@@ -86,4 +100,37 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         return postArrayList.size();
     }
 
+
+    private void updatePostClosed(Post post, PostViewHolder holder){
+
+        JsonObject postId = new JsonObject();
+        JsonObject id = new JsonObject();
+        // Post ID
+        id.addProperty("$oid", post.getPostID());
+        postId.add("_id", id);
+        // closed status
+        JsonObject status = new JsonObject();
+        status.addProperty("status", "Closed");
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                System.out.println("the post UPDATED " + message.toString());
+                holder.endImgBtn.setVisibility(View.INVISIBLE);
+            }
+        };
+
+        new DataFunctions().updatePost(handleMessage, postId, status);
+    }
 }

@@ -176,7 +176,7 @@ public class MyPostsActivity extends AppCompatActivity {
                     String imgStr = imgMap.get("img").toString();
                     // delete the prefix("data:image/.*;base64,")
                     String[] imgList = imgStr.split(",");
-                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
+//                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
                     currPost.setImgStr(imgList[1]);
 //                    Log.e(TAG, "In handleMessage: " + imgMap.get("img").toString());
                 }
