@@ -183,52 +183,59 @@ public class CreatePostActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (titleInput.getText().toString().equals("") || descriptionInput.getText().toString().equals("") ||
+                        gameInput.getText().toString().equals("") || seatsInput.getText().toString().equals("") ||
+                        timeInput.getText().toString().equals("") || authorNameInput.getText().toString().equals("")) {
+                    Toast.makeText(CreatePostActivity.this, "There Is Content Not Filled!", Toast.LENGTH_SHORT).show();
+                } else if(location.equals("")){
+                    Toast.makeText(CreatePostActivity.this, "Add Location!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // create json object
+                    JsonObject post = new JsonObject();
+                    post.addProperty("title",titleInput.getText().toString());
+                    post.addProperty("content", descriptionInput.getText().toString());
+                    post.addProperty("gameName",gameInput.getText().toString());
+                    post.addProperty("seat", Integer.parseInt(seatsInput.getText().toString()));
+                    Log.d(TAG, "onClick: " + location);
+                    post.addProperty("location", location);
+                    post.addProperty("gameTime", timeInput.getText().toString());
+                    post.addProperty("status", "Closed");
+                    String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    post.addProperty("createTime", formatDate);
+                    JsonObject owner = new JsonObject();
+                    JsonObject ownerID = new JsonObject();
+                    ownerID.addProperty("$oid", userID);
+                    owner.addProperty("name",username);
+                    owner.add("id", ownerID);
+                    post.add("owner", owner);
+                    post.add("applied", new JsonArray());
+                    post.add("selected", new JsonArray());
+                    JsonObject imageObj = new JsonObject();
+                    imageObj.addProperty("img","data:image/png;base64," + photo);
+                    imageObj.addProperty("uploadTime", formatDate);
+                    MyRunnable handleMessage = new MyRunnable() {
+                        JsonObject message;
+                        @Override
+                        public MyRunnable setParam(JsonObject param) {
+                            message = param;
+                            return this;
+                        }
+
+                        @Override
+                        public void run() {
+                            handleMessage(message);
+                        }
+
+                        private void handleMessage(JsonObject message) {
+                            Log.d(TAG, "post is successfully created!");
+                        }
+                    };
+
+                    new DataFunctions().createPost(handleMessage, post, imageObj);
+                    // go back
+                    CreatePostActivity.super.onBackPressed();
+                }
                 Log.d(TAG, "onClick: click submitted");
-
-                // create json object
-                JsonObject post = new JsonObject();
-                post.addProperty("title",titleInput.getText().toString());
-                post.addProperty("content", descriptionInput.getText().toString());
-                post.addProperty("gameName",gameInput.getText().toString());
-                post.addProperty("seat", Integer.parseInt(seatsInput.getText().toString()) );
-                Log.d(TAG, "onClick: " + location);
-                post.addProperty("location", location);
-                post.addProperty("gameTime", timeInput.getText().toString());
-                post.addProperty("status", "Closed");
-                String formatDate= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                post.addProperty("createTime", formatDate);
-                JsonObject owner = new JsonObject();
-                JsonObject ownerID = new JsonObject();
-                ownerID.addProperty("$oid", userID);
-                owner.addProperty("name",username);
-                owner.add("id", ownerID);
-                post.add("owner", owner);
-                post.add("applied", new JsonArray());
-                post.add("selected", new JsonArray());
-                JsonObject imageObj = new JsonObject();
-                imageObj.addProperty("img","data:image/png;base64," + photo);
-                imageObj.addProperty("uploadTime", formatDate);
-                MyRunnable handleMessage = new MyRunnable() {
-                    JsonObject message;
-                    @Override
-                    public MyRunnable setParam(JsonObject param) {
-                        message = param;
-                        return this;
-                    }
-
-                    @Override
-                    public void run() {
-                        handleMessage(message);
-                    }
-
-                    private void handleMessage(JsonObject message) {
-                        Log.d(TAG, "post is successfully created!");
-                    }
-                };
-
-                new DataFunctions().createPost(handleMessage, post, imageObj);
-                // go back
-                CreatePostActivity.super.onBackPressed();
             }
         });
     }
