@@ -42,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         reviewsList = new ArrayList<>();
         setAdapter();
         getReviews();
+        getAvgRate();
 
 
 
@@ -84,17 +85,8 @@ public class ProfileActivity extends AppCompatActivity {
             return true;
         });
 
-
-
         }
 
-//    private void setReviewInfo(){
-//        reviewsList.add(new Review(userID, "very good team player"));
-//        reviewsList.add(new Review(userID, "good teammate"));
-//        reviewsList.add(new Review(userID, "smooth collaboration"));
-
-
-//    }
 
     private void setAdapter(){
         reviewAdapter = new ReviewAdapter(reviewsList);
@@ -125,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             private void handleMessage(JsonObject message) {
-                System.out.println("the reviews " + message.toString());
+//                System.out.println("the reviews " + message.toString());
                 JsonArray reviewArray = message.getAsJsonArray("documents");
 
                 for (int i = 0; i < reviewArray.size(); i++) {
@@ -137,7 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
                     reviewAdapter.notifyItemChanged(i);
                 }
 
-                System.out.println("Reviews" + reviewsList);
+//                System.out.println("Reviews" + reviewsList);
 
             }
         };
@@ -146,4 +138,38 @@ public class ProfileActivity extends AppCompatActivity {
     };
 
 
+    public void getAvgRate(){
+        JsonObject toObj = new JsonObject();
+        JsonObject toId = new JsonObject();
+        toId.addProperty("$oid","637ce04eb5eb013ea20e7011");
+        toObj.add("to", toId);
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+                JsonArray rateArray = message.getAsJsonArray("documents");
+                JsonElement rateJsonObject = rateArray.get(0);
+                HashMap rateMap = new Gson().fromJson(rateJsonObject.toString(), HashMap.class);
+                Double avgRate = (Double) rateMap.get("avgRate");
+                String avgRateStr = "Average Rating: " + String.format("%.2f", avgRate);
+
+                TextView avgRateTextView = findViewById(R.id.ratingTv);
+                avgRateTextView.setText(avgRateStr);
+//                System.out.println("the avg rate " + message.toString());
+            }
+        };
+
+        new DataFunctions().getAvgRate(handleMessage, toObj);
+    }
 }
