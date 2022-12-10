@@ -61,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
                     intent0.putExtra("username", username);
                     intent0.putExtra("userID", userID);
                     startActivity(intent0);
+                    finish();
                     break;
                 case R.id.nav_my_posts:
                     Intent intent1 = new Intent(ProfileActivity.this, MyPostsActivity.class);
@@ -73,12 +74,14 @@ public class ProfileActivity extends AppCompatActivity {
                     intent2.putExtra("username", username);
                     intent2.putExtra("userID", userID);
                     startActivity(intent2);
+                    finish();
                     break;
                 case R.id.nav_profile:
                     Intent intent3 = new Intent(ProfileActivity.this,ProfileActivity.class);
                     intent3.putExtra("username", username);
                     intent3.putExtra("userID", userID);
                     startActivity(intent3);
+                    finish();
                     break;
             }
 

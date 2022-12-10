@@ -103,7 +103,7 @@ public class LogInActivity extends AppCompatActivity {
         intent.putExtra("userID", userID);
         startActivity(intent);
         // finish the LogInActivity to avoid returning to the LogInActivity
-//        finish();
+        finish();
     }
 
     @Override
