@@ -9,7 +9,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMyPosts"
         android:layout_width="match_parent"
-        android:layout_height="614dp" />
+        android:layout_height="match_parent"
+        android:background="#EDECEC" />
 
     <FrameLayout
         android:id="@+id/fragment_container"

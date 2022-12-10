@@ -19,7 +19,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     public PostViewHolder(@NonNull View itemView) {
         super(itemView);
-        this.applyBtn = itemView.findViewById(R.id.applyBtn);
+//        this.applyBtn = itemView.findViewById(R.id.applyBtn);
 
         this.titleTv = itemView.findViewById(R.id.titleTv);
         this.postTimeTv = itemView.findViewById(R.id.postTimeTv);

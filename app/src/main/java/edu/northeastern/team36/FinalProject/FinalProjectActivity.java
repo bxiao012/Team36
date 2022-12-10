@@ -177,6 +177,8 @@ public class FinalProjectActivity extends AppCompatActivity {
                     Double doubleSeat = (Double) postMap.get("seat");
                     Map ownerMap = (Map) postMap.get("owner");
                     List selectedUsers = (List) postMap.get("selected");
+//                    Log.e(TAG, "In getAllPost: " + postMap);
+
 //                    Log.e(TAG, "In getAllPost: " + postMap.get("image").toString());
 
                     Post post = new Post(postMap.get("_id").toString(), ownerMap.get("name").toString(),
@@ -201,7 +203,7 @@ public class FinalProjectActivity extends AppCompatActivity {
         JsonObject imageObj = new JsonObject();
         JsonObject imageId = new JsonObject();
         Post currPost = postArrayList.get(i);
-//        Log.e(TAG, currPost.getImgStr());
+        Log.i(TAG, currPost.getImgStr());
         imageId.addProperty("$oid", currPost.getImgStr());
         imageObj.add("_id", imageId);
 
@@ -226,7 +228,7 @@ public class FinalProjectActivity extends AppCompatActivity {
                     String imgStr = imgMap.get("img").toString();
                     // delete the prefix("data:image/.*;base64,")
                     String[] imgList = imgStr.split(",");
-                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
+//                    Log.e(TAG, "In handleMessage: imgStr is " + imgStr);
                     currPost.setimgStr(imgList[1]);
 //                    Log.e(TAG, "In handleMessage: " + imgMap.get("img").toString());
                 }
