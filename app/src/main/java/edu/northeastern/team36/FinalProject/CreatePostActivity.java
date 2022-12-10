@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -57,7 +58,6 @@ import edu.northeastern.team36.R;
 
 public class CreatePostActivity extends AppCompatActivity {
     private static final int LOCATION_REQUEST_CODE = 10001;
-    private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     EditText titleInput;
     EditText gameInput;
@@ -112,6 +112,21 @@ public class CreatePostActivity extends AppCompatActivity {
 
         // get location
         locationBtn = (Button) findViewById(R.id.locationButton);
+        locationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onStart: ");
+                if (ContextCompat.checkSelfPermission(CreatePostActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(CreatePostActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            getLastLocation();
+                    checkSettingsAndStartLocationUpdates();
+                    Toast.makeText(CreatePostActivity.this, "Added Location!", Toast.LENGTH_SHORT).show();
+                } else { // ask for the permission
+                    askLocationPermission();
+                    Toast.makeText(CreatePostActivity.this, "Click Location Button Again!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //get image
         imageV = (ImageView) findViewById(R.id.imageView);
@@ -128,7 +143,6 @@ public class CreatePostActivity extends AppCompatActivity {
                             imageV.setImageBitmap(pictureBitmap);
                             // encode the bitmap
                             photo = getEncodedString(pictureBitmap);
-                            System.out.println("photo: " + photo);
                         }
                     }
                 });
@@ -143,13 +157,14 @@ public class CreatePostActivity extends AppCompatActivity {
                 {
                     Log.d(TAG, "onClick: ask for permission");
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                    Toast.makeText(CreatePostActivity.this, "Click Image Button Again!", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     Log.d(TAG, "onClick: take picture");
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityIntent.launch(cameraIntent);
-
+                    Toast.makeText(CreatePostActivity.this, "Take a Picture!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -191,8 +206,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 post.add("applied", new JsonArray());
                 post.add("selected", new JsonArray());
                 JsonObject imageObj = new JsonObject();
-                imageObj.addProperty("img",photo);
-                System.out.println("upload photo: " + "data:image/png;base64," + photo);
+                imageObj.addProperty("img","data:image/png;base64," + photo);
                 imageObj.addProperty("uploadTime", formatDate);
                 MyRunnable handleMessage = new MyRunnable() {
                     JsonObject message;
@@ -219,18 +233,18 @@ public class CreatePostActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        Log.d(TAG, "onStart: ");
-        super.onStart();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            getLastLocation();
-            checkSettingsAndStartLocationUpdates();
-        } else { // ask for the permission
-            askLocationPermission();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        Log.d(TAG, "onStart: ");
+//        super.onStart();
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+////            getLastLocation();
+//            checkSettingsAndStartLocationUpdates();
+//        } else { // ask for the permission
+//            askLocationPermission();
+//        }
+//    }
 
     private void checkSettingsAndStartLocationUpdates() {
         LocationSettingsRequest request = new LocationSettingsRequest.Builder()
@@ -274,7 +288,6 @@ public class CreatePostActivity extends AppCompatActivity {
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-
     }
 
     private void askLocationPermission() {
