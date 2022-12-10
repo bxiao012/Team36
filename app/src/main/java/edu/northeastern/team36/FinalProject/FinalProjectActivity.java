@@ -64,32 +64,6 @@ public class FinalProjectActivity extends AppCompatActivity {
         userID = getIntent().getStringExtra("userID");
         postArrayList = new ArrayList<>();
 
-        // call back the post details from the createPostActivity
-        ActivityResultLauncher<Intent> activityLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        Log.d(TAG, "onActivityResult: ");
-                        if (result.getResultCode() == 36) {
-                            Intent intent = result.getData();
-
-                            if(intent != null) {
-//                                 Extract data
-                                String[] data = intent.getStringArrayExtra("result");
-                                title = data[0];
-                                game = data[1];
-                                authorName = data[2];
-                                time = data[3];
-                                description = data[4];
-                                seats = Integer.parseInt(data[5]);
-//                                postArrayList.add(new Post("postId", authorName, description, title, game, time, seats));
-                            }
-                        }
-                    }
-                }
-        );
-
         // add a new post by clicking the fab
         fab = (FloatingActionButton) findViewById(R.id.addNewPostFAB);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +72,7 @@ public class FinalProjectActivity extends AppCompatActivity {
                 Intent intent = new Intent(FinalProjectActivity.this, CreatePostActivity.class);
                 intent.putExtra("username", username);
                 intent.putExtra("userID", userID);
-                activityLauncher.launch(intent);
+                startActivity(intent);
             }
         });
 
