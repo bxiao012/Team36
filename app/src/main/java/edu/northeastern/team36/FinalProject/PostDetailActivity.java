@@ -34,7 +34,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private static final String TAG = "PostDetailActivity";
     private String postID, username, userID;
     private String passUsername, passUserID;
-    private String title, authorName, description, seatRemaining, gameName, gameTime, status, createTime;
+    private String title, authorName, description, seatRemaining, gameName, gameTime, status, createTime, location;
     private List<Map> appliedUsers, selectedUsers;
     private TextView titleTv, authorTv, descriptionTv, seatTv, gameTv, gameTimeTv;
     private ImageView imageView;
@@ -147,6 +147,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     // update appliedUsers and selectedUsers
                     appliedUsers = (List<Map>) postMap.get("applied");
                     selectedUsers = (List<Map>) postMap.get("selected");
+//
+//                    Map currUserMap = appliedUsers.get(0);
+//                    String currName = currUserMap.get("name").toString();
+//                    String currID = currUserMap.get("id").toString();
+
 
                     List<String> appliedUsersList = new ArrayList<>();
                     List<String> selectedUsersList = new ArrayList<>();
@@ -194,6 +199,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     status = postMap.get("status").toString();
                     createTime = postMap.get("createTime").toString();
                     gameTime = postMap.get("gameTime").toString();
+                    location = postMap.get("location").toString();
                     Double doubleSeat = (Double) postMap.get("seat");
                     seatRemaining = "Seats: " + selectedUsers.size() + "/" + doubleSeat.intValue();
 
