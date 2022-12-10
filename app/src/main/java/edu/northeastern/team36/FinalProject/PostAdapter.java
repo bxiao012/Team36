@@ -54,6 +54,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String seatsRemaining = "Seats: " + currPost.getSelected().toString() + " / "
                 + currPost.getSeats().toString();
         holder.seatTv.setText(seatsRemaining);
+        holder.reviewImgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CreateReviewActivity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("userID", userID);
+                intent.putExtra("postID", currPost.getPostID());
+                context.startActivity(intent);
+            }
+        });
 
         if (this.postsType.equals("AppliedPosts")) {
             holder.reviewImgBtn.setVisibility(View.VISIBLE);
