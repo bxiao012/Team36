@@ -80,29 +80,29 @@
 
     <TextView
         android:id="@+id/titleTv2"
-        android:layout_width="201dp"
-        android:layout_height="47dp"
+        android:layout_width="392dp"
+        android:layout_height="46dp"
         android:text="Post Title"
         android:textColor="@color/black"
-        android:textSize="35sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintHorizontal_bias="0.421"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
 
     <LinearLayout
-        android:layout_width="221dp"
-        android:layout_height="120dp"
+        android:id="@+id/linearLayout4"
+        android:layout_width="395dp"
+        android:layout_height="113dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageTv2"
-        app:layout_constraintVertical_bias="0.295">
+        app:layout_constraintVertical_bias="0.292">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,16 +111,24 @@
 
             <TextView
                 android:id="@+id/appliedUserTv"
-                android:layout_width="127dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="Applied Users" />
 
             <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="38dp"
+                android:id="@+id/applied_spinner"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/applied_button"
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Enter Applied" />
         </LinearLayout>
 
         <LinearLayout
@@ -130,17 +138,49 @@
 
             <TextView
                 android:id="@+id/selectedUserTv"
-                android:layout_width="127dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="Selected Users" />
 
             <Spinner
-                android:id="@+id/spinner2"
-                android:layout_width="38dp"
+                android:id="@+id/selected_spinner"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/selected_button"
+                android:layout_width="53dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Enter Selected" />
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/enter_owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="owner profile"
+        app:layout_constraintBottom_toTopOf="@+id/seatTv2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.621"
+        app:layout_constraintStart_toEndOf="@+id/postAuthorTv2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.738" />
+
+    <TextView
+        android:id="@+id/game_time_tv"
+        android:layout_width="178dp"
+        android:layout_height="21dp"
+        android:text="Time"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageTv2"
+        app:layout_constraintVertical_bias="0.263" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
