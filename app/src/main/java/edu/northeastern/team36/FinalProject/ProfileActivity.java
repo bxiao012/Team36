@@ -40,8 +40,8 @@ public class ProfileActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
         userID = getIntent().getStringExtra("userID");
         reviewsList = new ArrayList<>();
-        getReviews();
         setAdapter();
+        getReviews();
 
 
 
@@ -97,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
 //    }
 
     private void setAdapter(){
-        ReviewAdapter reviewAdapter = new ReviewAdapter(reviewsList);
+        reviewAdapter = new ReviewAdapter(reviewsList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
