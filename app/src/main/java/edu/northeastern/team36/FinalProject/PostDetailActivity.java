@@ -102,6 +102,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     if(appliedSpinner.getSelectedItem() == null || selectedUserArray.contains(appliedSpinner.getSelectedItem().toString())) {
                         Toast.makeText(PostDetailActivity.this, "Invalid! Select A Valid User", Toast.LENGTH_SHORT).show();
                     } else {
+                        Toast.makeText(PostDetailActivity.this, "Select A User", Toast.LENGTH_SHORT).show();
                         selectedUserArray.add(appliedSpinner.getSelectedItem().toString());
                         for(int i = 0; i < selectedUserArray.size(); i++) {
                             System.out.println(selectedUserArray.get(i));
@@ -117,7 +118,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 if (!authorName.equals(username)) {
                     Toast.makeText(PostDetailActivity.this, "You Are Not The Owner", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (selectedUserArray.isEmpty() || appliedSpinner.getSelectedItem() == null || selectedUserArray.contains(appliedSpinner.getSelectedItem().toString())) {
+                    if (selectedUserArray.isEmpty()) {
                         Toast.makeText(PostDetailActivity.this, "No Item selected!", Toast.LENGTH_SHORT).show();
                     } else {
                         JsonObject postId = new JsonObject();
