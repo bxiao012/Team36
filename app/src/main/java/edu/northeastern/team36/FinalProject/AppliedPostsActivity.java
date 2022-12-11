@@ -160,12 +160,6 @@ public class AppliedPostsActivity extends AppCompatActivity {
                 // update imgStr in posts
                 for (int i = 0; i < postArrayList.size(); i++) {
                     findImageByImageId(i);
-                    // update haveReviewToArray
-//                    Post currPost = postArrayList.get(i);
-//                    String currPostID = currPost.getPostID();
-//                    if (postReviewToMap.containsKey(currPostID)){
-//                        currPost.setHaveReviewToArray(postReviewToMap.get(currPostID));
-//                    }
                 }
             }
         };
@@ -259,5 +253,17 @@ public class AppliedPostsActivity extends AppCompatActivity {
         };
 
         new DataFunctions().findReviews(handleMessage, toObj);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // fill the postRecyclerView
+        postArrayList.clear();
+        postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
+        postRecyclerView.setAdapter(postAdapter);
+        // start fetch data
+        findReviewsByFromID();
     }
 }
