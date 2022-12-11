@@ -119,22 +119,23 @@
                 android:id="@+id/reviewImgBtn"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionTv"
+                app:layout_constraintEnd_toStartOf="@+id/endImgBtn"
+                app:layout_constraintTop_toTopOf="@+id/endImgBtn"
                 app:srcCompat="@drawable/ic_my_posts" />
 
             <ImageButton
                 android:id="@+id/endImgBtn"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:visibility="invisible"
-                app:layout_constraintEnd_toStartOf="@+id/reviewImgBtn"
-                app:layout_constraintTop_toTopOf="@+id/reviewImgBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTv"
                 app:srcCompat="@drawable/ic_applied_posts" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

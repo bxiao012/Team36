@@ -145,7 +145,6 @@ public class FinalProjectActivity extends AppCompatActivity {
 
                 for (int i = 0; i < postArray.size(); i++) {
                     JsonElement postJsonObject = postArray.get(i);
-//                    System.out.println(postJsonObject);
                     HashMap postMap = new Gson().fromJson(postJsonObject.toString(), HashMap.class);
 
                     Double doubleSeat = (Double) postMap.get("seat");
@@ -159,7 +158,7 @@ public class FinalProjectActivity extends AppCompatActivity {
                             postMap.get("content").toString(), postMap.get("title").toString(),
                             postMap.get("gameName").toString(), postMap.get("createTime").toString(),
                             postMap.get("image").toString(), postMap.get("status").toString(),
-                            doubleSeat.intValue(), selectedUsers.size());
+                            doubleSeat.intValue(), selectedUsers.size(), new ArrayList<>());
                     postArrayList.add(post);
                 }
 
@@ -199,6 +198,9 @@ public class FinalProjectActivity extends AppCompatActivity {
                 if (message != null) {
                     JsonArray imgArray = message.getAsJsonArray("documents");
 
+                    if (imgArray.isEmpty()) {
+                        return;
+                    }
                     HashMap imgMap = new Gson().fromJson(imgArray.get(0).toString(), HashMap.class);
                     String imgStr = imgMap.get("img").toString();
                     // delete the prefix("data:image/.*;base64,")

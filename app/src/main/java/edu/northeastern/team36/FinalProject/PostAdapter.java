@@ -1,15 +1,22 @@
 package edu.northeastern.team36.FinalProject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,14 +68,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 intent.putExtra("username", username);
                 intent.putExtra("userID", userID);
                 intent.putExtra("postID", currPost.getPostID());
+                intent.putStringArrayListExtra("haveReviewToArray",  currPost.getHaveReviewToArray());
+
                 context.startActivity(intent);
             }
         });
 
-        if (this.postsType.equals("AppliedPosts")) {
+        // set visibility
+//        Log.e(TAG, currPost.getTitle() + " " + currPost.getHaveReviewToArray().toString() +
+//                " " + currPost.getSelected() + " " + currPost.getHaveReviewToArray().size());
+        if (this.postsType.equals("AppliedPosts")
+                && currPost.getSelected() - 1 > currPost.getHaveReviewToArray().size()) {
             holder.reviewImgBtn.setVisibility(View.VISIBLE);
         } else if (this.postsType.equals("MyPosts") && currPost.getStatus().equals("In progress")
-        && currPost.getSeats().equals(currPost.getSelected())) {
+                && currPost.getSeats().equals(currPost.getSelected())) {
 //            Log.e(TAG, currPost.getPostID() + " status: " + currPost.getStatus() + " seats: "
 //            + currPost.getSeats() + " selected: " +currPost.getSelected());
             holder.endImgBtn.setVisibility(View.VISIBLE);
@@ -136,7 +149,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
             }
 
             private void handleMessage(JsonObject message) {
-                System.out.println("the post UPDATED " + message.toString());
+//                System.out.println("the post UPDATED " + message.toString());
                 holder.endImgBtn.setVisibility(View.INVISIBLE);
             }
         };

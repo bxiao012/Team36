@@ -2,10 +2,12 @@ package edu.northeastern.team36.FinalProject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,9 +35,11 @@ import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class CreateReviewActivity extends AppCompatActivity {
+    private static final String TAG = "CreateReviewActivity";
     private String postID, username, userID, title, ownerUserID, ownerUsername;
     List<String> userArray = new ArrayList<>();
     private List<Map> selectedUsers;
+    private ArrayList<String> haveReviewToArray;
     HashMap<String, String> userMap = new HashMap<>();
     HashMap<String, Boolean> reviewMap = new HashMap<>();
     boolean addUserToReviewMap = true;
@@ -54,6 +58,8 @@ public class CreateReviewActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
         userID = getIntent().getStringExtra("userID");
         postID = getIntent().getStringExtra("postID");
+        haveReviewToArray = getIntent().getStringArrayListExtra("haveReviewToArray");
+//        Log.e(TAG, String.valueOf(haveReviewToArray));
 
         userSpinner = (Spinner) findViewById(R.id.user_spinner);
         submit = (Button) findViewById(R.id.submit_review_btn);
@@ -76,9 +82,9 @@ public class CreateReviewActivity extends AppCompatActivity {
                         reviewMap.put(userSpinner.getSelectedItem().toString(), true);
                         JsonObject reviewObj = new JsonObject();
                         JsonObject toId = new JsonObject();
-                        toId.addProperty("$oid",userID);
+                        toId.addProperty("$oid",userMap.get(userSpinner.getSelectedItem()));
                         JsonObject fromId = new JsonObject();
-                        fromId.addProperty("$oid", userMap.get(userSpinner.getSelectedItem()));
+                        fromId.addProperty("$oid", userID);
                         JsonObject postId = new JsonObject();
                         postId.addProperty("$oid",postID);
                         reviewObj.add("from", fromId);
@@ -103,8 +109,10 @@ public class CreateReviewActivity extends AppCompatActivity {
                             }
 
                             private void handleMessage(JsonObject message) {
+                                haveReviewToArray.add(userMap.get(userSpinner.getSelectedItem()));
                                 userArray.clear();
                                 findPostWithImage();
+                                Toast.makeText(CreateReviewActivity.this, "Submitted successfully!", Toast.LENGTH_SHORT).show();
                                 System.out.println("the review created " + message.toString());
                             }
                         };
@@ -152,7 +160,8 @@ public class CreateReviewActivity extends AppCompatActivity {
                     // set selected users spinner
                     if (!selectedUsers.isEmpty()) {
                         for(Map selectedUser : selectedUsers) {
-                            if (selectedUser.get("name").toString().equals(username))
+                            if (selectedUser.get("id").toString().equals(userID)
+                                    || haveReviewToArray.contains(selectedUser.get("id")))
                                 continue;
                             userArray.add(selectedUser.get("name").toString());
                             userMap.put(selectedUser.get("name").toString(), selectedUser.get("id").toString());
@@ -173,15 +182,6 @@ public class CreateReviewActivity extends AppCompatActivity {
                     // set data to xml
                     titleTv.setText(title);
 
-                    // set spinner containing owner
-                    // if current user is not owner
-                    if (!username.equals(ownerUsername)) {
-                        userArray.add(ownerUsername);
-                        userMap.put(ownerUsername, ownerUserID);
-                        if(addUserToReviewMap) {
-                            reviewMap.put(ownerUsername, false);
-                        }
-                    }
                     String[] userArr = new String[userArray.size()];
                     userArr = userArray.toArray(userArr);
                     ArrayAdapter<String> selectedAdapter = new ArrayAdapter<String>

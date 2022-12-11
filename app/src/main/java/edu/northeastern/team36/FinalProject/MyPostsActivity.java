@@ -134,7 +134,7 @@ public class MyPostsActivity extends AppCompatActivity {
                             postMap.get("content").toString(), postMap.get("title").toString(),
                             postMap.get("gameName").toString(), postMap.get("createTime").toString(),
                             postMap.get("image").toString(), postMap.get("status").toString(),
-                            doubleSeat.intValue(), selectedUsers.size());
+                            doubleSeat.intValue(), selectedUsers.size(), new ArrayList<>());
                     postArrayList.add(post);
                 }
                 // update imgStr in posts

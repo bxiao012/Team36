@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +22,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import edu.northeastern.team36.FinalProject.DAO.DataFunctions;
@@ -33,9 +40,9 @@ public class AppliedPostsActivity extends AppCompatActivity {
     private static final String POST_TYPE = "AppliedPosts";
     private static PostAdapter postAdapter;
     private static ArrayList<Post> postArrayList;
+    private static HashMap<String, ArrayList<String>> postReviewToMap; //postID: [toID]
     private RecyclerView postRecyclerView;
     private String username, userID;
-    private ImageButton reviewImgBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +59,8 @@ public class AppliedPostsActivity extends AppCompatActivity {
         postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
         postRecyclerView.setAdapter(postAdapter);
 
-        getAppliedPosts();
+        // start fetch data
+        findReviewsByFromID();
 
         // navbar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -93,18 +101,6 @@ public class AppliedPostsActivity extends AppCompatActivity {
             return true;
         });
 
-        // review button to create review
-//        reviewImgBtn = (ImageButton) findViewById(R.id.reviewImgBtn);
-//        reviewImgBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(AppliedPostsActivity.this, CreateReviewActivity.class);
-//                intent.putExtra("username", username);
-//                intent.putExtra("userID", userID);
-//                startActivity(intent);
-//            }
-//        });
-
     }
 
 
@@ -144,12 +140,19 @@ public class AppliedPostsActivity extends AppCompatActivity {
                     for (int j = 0; j < appliedUsers.size(); j++) {
 //                        System.out.println(appliedUsers.get(j).get("id").toString());
                         String appliedUserID = (String) appliedUsers.get(j).get("id");
+//                        Log.e(TAG, "postID: " + postMap.get("_id").toString() +
+//                                " postReviewMap: " + postReviewToMap.toString() +
+//                                "reviewList: " + postReviewToMap.get(postMap.get("_id").toString()));
+                        ArrayList<String> currHaveReviewToArrLi = postReviewToMap.get(postMap.get("_id").toString());
+                        if (currHaveReviewToArrLi == null) {
+                            currHaveReviewToArrLi = new ArrayList<>();
+                        }
                         if (appliedUserID != null && appliedUserID.equals(userID)) {
                             Post post = new Post(postMap.get("_id").toString(), ownerMap.get("name").toString(),
                                     postMap.get("content").toString(), postMap.get("title").toString(),
                                     postMap.get("gameName").toString(), postMap.get("createTime").toString(),
                                     postMap.get("image").toString(), postMap.get("status").toString(),
-                                    doubleSeat.intValue(), selectedUsers.size());
+                                    doubleSeat.intValue(), selectedUsers.size(), currHaveReviewToArrLi);
                             postArrayList.add(post);
                         }
                     }
@@ -157,6 +160,12 @@ public class AppliedPostsActivity extends AppCompatActivity {
                 // update imgStr in posts
                 for (int i = 0; i < postArrayList.size(); i++) {
                     findImageByImageId(i);
+                    // update haveReviewToArray
+//                    Post currPost = postArrayList.get(i);
+//                    String currPostID = currPost.getPostID();
+//                    if (postReviewToMap.containsKey(currPostID)){
+//                        currPost.setHaveReviewToArray(postReviewToMap.get(currPostID));
+//                    }
                 }
             }
         };
@@ -204,5 +213,51 @@ public class AppliedPostsActivity extends AppCompatActivity {
         };
 
         new DataFunctions().findImage(handleMessage, imageObj);
+    }
+
+    public void findReviewsByFromID() {
+        // Find reviews "from" current user
+        JsonObject toObj = new JsonObject();
+        JsonObject toId = new JsonObject();
+        toId.addProperty("$oid",userID);
+        toObj.add("from", toId);
+
+
+        MyRunnable handleMessage = new MyRunnable() {
+            JsonObject message;
+            @Override
+            public MyRunnable setParam(JsonObject param) {
+                message = param;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                handleMessage(message);
+            }
+
+            private void handleMessage(JsonObject message) {
+//                Log.e(TAG, "the reviews " + message.toString());
+                JsonArray reviewArray = message.getAsJsonArray("documents");
+
+                postReviewToMap = new HashMap<>();
+                for (int i = 0; i < reviewArray.size(); i++) {
+                    JsonElement reviewJsonObject = reviewArray.get(i);
+                    HashMap reviewMap = new Gson().fromJson(reviewJsonObject.toString(), HashMap.class);
+                    String postID = reviewMap.get("postId").toString();
+                    String reviewToID = reviewMap.get("to").toString();
+                    if (postReviewToMap.containsKey(postID)){
+                        postReviewToMap.get(postID).add(reviewToID);
+                    } else {
+                        postReviewToMap.put(postID, new ArrayList<>(Arrays.asList(reviewToID)));
+                    }
+                }
+//                Log.e(TAG, "the reviews " + postReviewToMap.toString());
+
+                getAppliedPosts();
+            }
+        };
+
+        new DataFunctions().findReviews(handleMessage, toObj);
     }
 }
