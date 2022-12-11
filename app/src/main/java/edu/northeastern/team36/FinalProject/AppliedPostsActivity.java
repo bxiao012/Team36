@@ -65,6 +65,7 @@ public class AppliedPostsActivity extends AppCompatActivity {
         // navbar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
+        bottomNav.getMenu().getItem(2).setChecked(true);
 
         bottomNav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
