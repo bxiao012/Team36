@@ -36,6 +36,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private String passUsername, passUserID;
     private String selectedUsername, selectedUserID;
     private String title, authorName, description, seatRemaining, gameName, gameTime, status, createTime, location;
+    private Integer seats;
     private List<Map> appliedUsers, selectedUsers;
     private TextView titleTv, authorTv, descriptionTv, seatTv, gameTv, gameTimeTv;
     private ImageView imageView;
@@ -104,9 +105,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(PostDetailActivity.this, "Select A User", Toast.LENGTH_SHORT).show();
                         selectedUserArray.add(appliedSpinner.getSelectedItem().toString());
-                        for(int i = 0; i < selectedUserArray.size(); i++) {
-                            System.out.println(selectedUserArray.get(i));
-                        }
+                        selectedMap.put(appliedSpinner.getSelectedItem().toString(), appliedMap.get(appliedSpinner.getSelectedItem().toString()));
                     }
                 }
             }
@@ -135,6 +134,10 @@ public class PostDetailActivity extends AppCompatActivity {
                             oid.addProperty("$oid", selectedMap.get(selectedUserArray.get(i)));
                             selectedOne.add("id",oid);
                             selectedArr.add(selectedOne);
+                        }
+                        if(selectedArr.size() > seats) {
+                            Toast.makeText(PostDetailActivity.this, "No More Available Seats!", Toast.LENGTH_SHORT).show();
+                            return;
                         }
 
                         // "selected" for inserting into selected and "applied" for inserting into applied
@@ -271,6 +274,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     gameTime = postMap.get("gameTime").toString();
                     location = postMap.get("location").toString();
                     Double doubleSeat = (Double) postMap.get("seat");
+                    seats = doubleSeat.intValue();
                     seatRemaining = "Seats: " + selectedUsers.size() + "/" + doubleSeat.intValue();
 
                     // set data to xml
