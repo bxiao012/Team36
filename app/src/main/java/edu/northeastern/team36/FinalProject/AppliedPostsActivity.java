@@ -50,17 +50,16 @@ public class AppliedPostsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_applied_posts);
         username = getIntent().getStringExtra("username");
         userID = getIntent().getStringExtra("userID");
-        postArrayList = new ArrayList<>();
 
 
-        // fill the postRecyclerView
-        postRecyclerView = findViewById(R.id.recyclerViewAppliedPosts);
-        postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
-        postRecyclerView.setAdapter(postAdapter);
-
-        // start fetch data
-        findReviewsByFromID();
+//        // fill the postRecyclerView
+//        postRecyclerView = findViewById(R.id.recyclerViewAppliedPosts);
+//        postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
+//        postRecyclerView.setAdapter(postAdapter);
+//
+//        // start fetch data
+//        findReviewsByFromID();
 
         // navbar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -261,9 +260,12 @@ public class AppliedPostsActivity extends AppCompatActivity {
         super.onResume();
 
         // fill the postRecyclerView
-        postArrayList.clear();
+        postArrayList = new ArrayList<>();
+        postRecyclerView = findViewById(R.id.recyclerViewAppliedPosts);
+        postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
         postRecyclerView.setAdapter(postAdapter);
+
         // start fetch data
         findReviewsByFromID();
     }

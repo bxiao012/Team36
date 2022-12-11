@@ -163,6 +163,9 @@ public class ProfileActivity extends AppCompatActivity {
 
             private void handleMessage(JsonObject message) {
                 JsonArray rateArray = message.getAsJsonArray("documents");
+                if (rateArray.isEmpty()) {
+                    return;
+                }
                 JsonElement rateJsonObject = rateArray.get(0);
                 HashMap rateMap = new Gson().fromJson(rateJsonObject.toString(), HashMap.class);
                 Double avgRate = (Double) rateMap.get("avgRate");
