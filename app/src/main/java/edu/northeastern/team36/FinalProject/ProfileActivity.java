@@ -27,6 +27,7 @@ import edu.northeastern.team36.FinalProject.DAO.MyRunnable;
 import edu.northeastern.team36.R;
 
 public class ProfileActivity extends AppCompatActivity {
+    private static final String TAG = "ProfileActivity";
     private ArrayList<Review> reviewsList;
     private RecyclerView recyclerView;
     private String username, userID;
@@ -128,7 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
                     JsonElement reviewJsonObject = reviewArray.get(i);
                     HashMap reviewMap = new Gson().fromJson(reviewJsonObject.toString(), HashMap.class);
                     Double doubleRating = (Double) reviewMap.get("rate");
-                    Review review = new Review(reviewMap.get("_id").toString(), reviewMap.get("content").toString(),doubleRating.intValue());
+                    Review review = new Review(reviewMap.get("_id").toString(), reviewMap.get("content").toString(), doubleRating);
                     reviewsList.add(review);
                     reviewAdapter.notifyItemChanged(i);
                 }
@@ -145,7 +146,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void getAvgRate(){
         JsonObject toObj = new JsonObject();
         JsonObject toId = new JsonObject();
-        toId.addProperty("$oid","637ce04eb5eb013ea20e7011");
+        toId.addProperty("$oid",userID);
         toObj.add("to", toId);
 
         MyRunnable handleMessage = new MyRunnable() {
@@ -162,6 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             private void handleMessage(JsonObject message) {
+                Log.e(TAG, message.toString());
                 JsonArray rateArray = message.getAsJsonArray("documents");
                 if (rateArray.isEmpty()) {
                     return;
@@ -173,7 +175,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                 TextView avgRateTextView = findViewById(R.id.ratingTv);
                 avgRateTextView.setText(avgRateStr);
-//                System.out.println("the avg rate " + message.toString());
             }
         };
 
