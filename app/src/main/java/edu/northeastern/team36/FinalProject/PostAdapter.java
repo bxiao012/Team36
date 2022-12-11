@@ -77,7 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         // set visibility
 //        Log.e(TAG, currPost.getTitle() + " " + currPost.getHaveReviewToArray().toString() +
 //                " " + currPost.getSelected() + " " + currPost.getHaveReviewToArray().size());
-        if (this.postsType.equals("AppliedPosts")
+        if (this.postsType.equals("AppliedPosts") && currPost.getStatus().equals("Closed")
                 && currPost.getSelected() - 1 > currPost.getHaveReviewToArray().size()) {
             holder.reviewImgBtn.setVisibility(View.VISIBLE);
         } else if (this.postsType.equals("MyPosts") && currPost.getStatus().equals("In progress")
