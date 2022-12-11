@@ -139,7 +139,13 @@ public class AppliedPostsActivity extends AppCompatActivity {
                     System.out.println(userID);
                     for (int j = 0; j < appliedUsers.size(); j++) {
 //                        System.out.println(appliedUsers.get(j).get("id").toString());
-                        String appliedUserID = (String) appliedUsers.get(j).get("id");
+                        if (appliedUsers.get(j).get("id") == null) {
+                            Log.e(TAG, postMap.get("_id").toString());
+                            Log.e(TAG, appliedUsers.get(j).get("id").toString() +
+                                    " appliedUsers.size: " + appliedUsers.size() + " j: " + j);
+                            continue;
+                        }
+                        String appliedUserID = appliedUsers.get(j).get("id").toString();
 //                        Log.e(TAG, "postID: " + postMap.get("_id").toString() +
 //                                " postReviewMap: " + postReviewToMap.toString() +
 //                                "reviewList: " + postReviewToMap.get(postMap.get("_id").toString()));
