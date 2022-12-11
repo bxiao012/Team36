@@ -42,15 +42,7 @@ public class MyPostsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_posts);
         username = getIntent().getStringExtra("username");
         userID = getIntent().getStringExtra("userID");
-        postArrayList = new ArrayList<>();
 
-        // fill the postRecyclerView
-        postRecyclerView = findViewById(R.id.recyclerViewMyPosts);
-        postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
-        postRecyclerView.setAdapter(postAdapter);
-
-        getMyPosts();
 
 
         // navbar
@@ -188,4 +180,17 @@ public class MyPostsActivity extends AppCompatActivity {
         new DataFunctions().findImage(handleMessage, imageObj);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // fill the postRecyclerView
+        postArrayList = new ArrayList<>();
+        postRecyclerView = findViewById(R.id.recyclerViewMyPosts);
+        postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        postAdapter = new PostAdapter(this, postArrayList, username, userID, POST_TYPE);
+        postRecyclerView.setAdapter(postAdapter);
+
+        getMyPosts();
+    }
 }

@@ -134,8 +134,8 @@ public class AppliedPostsActivity extends AppCompatActivity {
                     Map ownerMap = (Map) postMap.get("owner");
                     List selectedUsers = (List) postMap.get("selected");
 
-                    // check if applied or not
-                    List<Map> appliedUsers = (List<Map>) postMap.get("applied");
+                    // check if selected or not
+                    List<Map> appliedUsers = (List<Map>) postMap.get("selected");
                     System.out.println(userID);
                     for (int j = 0; j < appliedUsers.size(); j++) {
 //                        System.out.println(appliedUsers.get(j).get("id").toString());
@@ -246,7 +246,7 @@ public class AppliedPostsActivity extends AppCompatActivity {
                         postReviewToMap.put(postID, new ArrayList<>(Arrays.asList(reviewToID)));
                     }
                 }
-//                Log.e(TAG, "the reviews " + postReviewToMap.toString());
+                Log.e(TAG, "the reviews " + postReviewToMap.toString());
 
                 getAppliedPosts();
             }
